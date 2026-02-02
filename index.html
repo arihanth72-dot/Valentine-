@@ -18,10 +18,10 @@ section{
   padding:40px 20px;
   text-align:center;
 }
-section.active{display:block;}
+section.active{display:block}
 
 button{
-  padding:12px 22px;
+  padding:12px 24px;
   margin:10px;
   border-radius:25px;
   border:none;
@@ -51,7 +51,6 @@ button{
   margin-top:15px;
   font-size:14px;
   line-height:1.4;
-  opacity:.9;
 }
 
 /* MUTE */
@@ -62,7 +61,6 @@ button{
   z-index:1000;
   border-radius:50%;
   padding:10px 14px;
-  font-size:16px;
   background:rgba(0,0,0,0.3);
   border:none;
   color:white;
@@ -93,7 +91,6 @@ button{
   padding:16px;
   border-radius:22px;
   background:rgba(255,255,255,0.18);
-  backdrop-filter:blur(8px);
 }
 .score-main{
   display:flex;
@@ -128,7 +125,7 @@ button{
   <h2>One important question 🤭💞</h2>
   <p>Will u be my valentine<br><b>Varshi bangaram</b> 💖</p>
   <button onclick="valYes()">Yes 💖</button>
-  <button id="valNoBtn" onclick="valNo()">No 😅</button>
+  <button onclick="valNo()">No 😅</button>
   <p id="valMsg"></p>
 </section>
 
@@ -161,10 +158,10 @@ button{
   <!-- END LOVE -->
   <div style="margin-top:30px;">
     <h3>One last thing 🤍</h3>
-    <p>Can I get a hug or a kiss before we end this? 🤭</p>
+    <p>Can I get a hug or a kiss? 🤭</p>
     <div style="font-size:32px;">
-      <span onclick="endLove('😘')" style="cursor:pointer;">😘</span>
-      <span onclick="endLove('🫂')" style="cursor:pointer;margin-left:20px;">🫂</span>
+      <span onclick="endLove('😘')">😘</span>
+      <span onclick="endLove('🫂')" style="margin-left:20px">🫂</span>
     </div>
     <p id="endMsg"></p>
   </div>
@@ -178,7 +175,7 @@ button{
 const PASSWORD="chococream";
 const firstMeetDate=new Date(2025,0,27);
 let slides=document.querySelectorAll("section");
-let current=0,attempts=0;
+let current=0;
 let runs=0,balls=0;
 
 /* CONFETTI */
@@ -200,12 +197,11 @@ function toggleMusic(){
 
 /* PASSWORD */
 function checkPassword(){
-  attempts++;
   if(passwordInput.value===PASSWORD){
     unlock();
-  }else if(attempts===1){
+  }else{
     error.innerHTML="You already broke into my heart 💖<br>why do you need a password again 😌";
-    setTimeout(unlock,1200);
+    setTimeout(unlock,1000);
   }
 }
 function unlock(){
@@ -214,26 +210,32 @@ function unlock(){
   slides[0].classList.add("active");
 }
 
-/* NAV */
+/* SAFE NAV */
 function next(){
+  if(current >= slides.length - 1) return;
   slides[current].classList.remove("active");
   current++;
   slides[current].classList.add("active");
-  if(current===1) updateDays();
+  if(current === 1) updateDays();
 }
 
-/* QUESTION */
+/* QUESTION (NO TIMEOUTS) */
 function valYes(){
+  lockButtons();
   valMsg.innerText="That made my whole day 🥹💖";
-  fireConfetti(); playMusicSafely();
+  playMusicSafely(); fireConfetti();
   updateCricket(40);
-  setTimeout(next,800);
+  next();
 }
 function valNo(){
+  lockButtons();
   valMsg.innerText="Hehe 🤭 I’ll take that as a shy yes 💖";
-  fireConfetti(); playMusicSafely();
+  playMusicSafely(); fireConfetti();
   updateCricket(40);
-  setTimeout(next,1000);
+  next();
+}
+function lockButtons(){
+  document.querySelectorAll("button").forEach(b=>b.disabled=true);
 }
 
 /* SCORE */
@@ -269,7 +271,7 @@ setInterval(()=>{
   h.style.left=Math.random()*100+"vw";
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),6000);
-},1400);
+},1500);
 
 /* BOUQUETS */
 setInterval(()=>{
@@ -279,7 +281,7 @@ setInterval(()=>{
   b.style.left=Math.random()*90+"vw";
   document.body.appendChild(b);
   setTimeout(()=>b.remove(),8000);
-},3800);
+},4000);
 </script>
 
 </body>
