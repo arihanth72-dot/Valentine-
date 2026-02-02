@@ -47,7 +47,12 @@ button{
   border-radius:20px;
   border:none;
 }
-#error{margin-top:15px;min-height:22px}
+#error{
+  margin-top:15px;
+  font-size:14px;
+  line-height:1.4;
+  opacity:.9;
+}
 
 /* MUTE */
 #muteBtn{
@@ -61,19 +66,6 @@ button{
   background:rgba(0,0,0,0.3);
   border:none;
   color:white;
-}
-
-/* ANIMATIONS */
-.fade{animation:fade 1s forwards}
-@keyframes fade{from{opacity:0}to{opacity:1}}
-
-.shake{animation:shake .4s}
-@keyframes shake{
-  0%{transform:translateX(0)}
-  25%{transform:translateX(-5px)}
-  50%{transform:translateX(5px)}
-  75%{transform:translateX(-5px)}
-  100%{transform:translateX(0)}
 }
 
 /* HEARTS */
@@ -131,17 +123,6 @@ button{
   <source src="https://cdn.pixabay.com/audio/2023/03/27/audio_2c9d8c0b61.mp3" type="audio/mpeg">
 </audio>
 
-<!-- INTRO -->
-<section>
-  <h1>Hey 🤍</h1>
-  <p>Can I get a hug or a kiss before we continue? 🤭</p>
-  <div style="font-size:32px;">
-    <span onclick="introLove('😘')">😘</span>
-    <span onclick="introLove('🫂')" style="margin-left:20px">🫂</span>
-  </div>
-  <p id="introMsg"></p>
-</section>
-
 <!-- QUESTION -->
 <section>
   <h2>One important question 🤭💞</h2>
@@ -177,6 +158,17 @@ button{
     <b>From your<br>Choco ( Ari )</b>
   </p>
 
+  <!-- END LOVE -->
+  <div style="margin-top:30px;">
+    <h3>One last thing 🤍</h3>
+    <p>Can I get a hug or a kiss before we end this? 🤭</p>
+    <div style="font-size:32px;">
+      <span onclick="endLove('😘')" style="cursor:pointer;">😘</span>
+      <span onclick="endLove('🫂')" style="cursor:pointer;margin-left:20px;">🫂</span>
+    </div>
+    <p id="endMsg"></p>
+  </div>
+
   <footer>— Arihanth</footer>
 </section>
 
@@ -194,18 +186,16 @@ function fireConfetti(){
   confetti({particleCount:50,spread:60,origin:{y:0.7}});
 }
 
-/* MUSIC SAFE */
+/* MUSIC */
 function playMusicSafely(){
-  const m=document.getElementById("bgMusic");
-  if(m.paused){
-    m.volume=0.7;
-    m.play().catch(()=>{});
+  if(bgMusic.paused){
+    bgMusic.volume=0.7;
+    bgMusic.play().catch(()=>{});
   }
 }
 function toggleMusic(){
-  const m=bgMusic;
-  if(m.paused){playMusicSafely();muteBtn.innerText="🔊";}
-  else{m.pause();muteBtn.innerText="🔇";}
+  if(bgMusic.paused){playMusicSafely();muteBtn.innerText="🔊";}
+  else{bgMusic.pause();muteBtn.innerText="🔇";}
 }
 
 /* PASSWORD */
@@ -214,7 +204,7 @@ function checkPassword(){
   if(passwordInput.value===PASSWORD){
     unlock();
   }else if(attempts===1){
-    error.innerText="You already broke into my heart 💖";
+    error.innerHTML="You already broke into my heart 💖<br>why do you need a password again 😌";
     setTimeout(unlock,1200);
   }
 }
@@ -229,33 +219,19 @@ function next(){
   slides[current].classList.remove("active");
   current++;
   slides[current].classList.add("active");
-  if(current===2) updateDays();
-}
-
-/* INTRO FIXED */
-function introLove(e){
-  introMsg.innerText=e==="😘"
-    ?"That kiss made my heart skip 💖"
-    :"This hug feels perfect 🫂";
-
-  playMusicSafely();
-  fireConfetti();
-  updateCricket(20);
-
-  setTimeout(next,600);
+  if(current===1) updateDays();
 }
 
 /* QUESTION */
 function valYes(){
   valMsg.innerText="That made my whole day 🥹💖";
-  fireConfetti();
+  fireConfetti(); playMusicSafely();
   updateCricket(40);
   setTimeout(next,800);
 }
 function valNo(){
   valMsg.innerText="Hehe 🤭 I’ll take that as a shy yes 💖";
-  valNoBtn.classList.add("shake");
-  fireConfetti();
+  fireConfetti(); playMusicSafely();
   updateCricket(40);
   setTimeout(next,1000);
 }
@@ -277,25 +253,33 @@ function updateDays(){
   daysTogether.innerText=Math.max(0,Math.floor((t-s)/(1000*60*60*24)));
 }
 
+/* END LOVE */
+function endLove(e){
+  endMsg.innerText = e==="😘"
+    ?"That kiss made my heart melt 💖"
+    :"That hug felt like home 🫂";
+  fireConfetti();
+}
+
 /* HEARTS */
 setInterval(()=>{
-  if(document.querySelectorAll(".heart").length>10)return;
+  if(document.querySelectorAll(".heart").length>8)return;
   const h=document.createElement("div");
   h.className="heart";h.innerText="❤️";
   h.style.left=Math.random()*100+"vw";
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),6000);
-},1200);
+},1400);
 
-/* BOUQUET */
+/* BOUQUETS */
 setInterval(()=>{
-  if(document.querySelectorAll(".bouquet").length>3)return;
+  if(document.querySelectorAll(".bouquet").length>2)return;
   const b=document.createElement("div");
   b.className="bouquet";b.innerText="💐";
   b.style.left=Math.random()*90+"vw";
   document.body.appendChild(b);
   setTimeout(()=>b.remove(),8000);
-},3500);
+},3800);
 </script>
 
 </body>
