@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -10,7 +10,6 @@ body{
   font-family:Poppins,sans-serif;
   background:linear-gradient(135deg,#ff758c,#ff7eb3);
   color:white;
-  overflow-x:hidden;
 }
 section{
   display:none;
@@ -19,7 +18,6 @@ section{
   text-align:center;
 }
 section.active{display:block}
-
 button{
   padding:12px 24px;
   margin:10px;
@@ -28,7 +26,6 @@ button{
   background:#ff4d6d;
   color:white;
   font-size:16px;
-  cursor:pointer;
 }
 
 /* LOCK */
@@ -40,49 +37,13 @@ button{
   justify-content:center;
   align-items:center;
   background:linear-gradient(135deg,#ff758c,#ff7eb3);
-  z-index:999;
 }
 #lockScreen input{
   padding:10px;
   border-radius:20px;
   border:none;
 }
-#error{
-  margin-top:15px;
-  font-size:14px;
-  line-height:1.4;
-}
-
-/* MUTE */
-#muteBtn{
-  position:fixed;
-  top:15px;
-  right:15px;
-  z-index:1000;
-  border-radius:50%;
-  padding:10px 14px;
-  background:rgba(0,0,0,0.3);
-  border:none;
-  color:white;
-}
-
-/* HEARTS */
-.heart{
-  position:fixed;
-  top:-10px;
-  font-size:14px;
-  animation:fall 6s linear forwards;
-}
-@keyframes fall{to{transform:translateY(110vh)}}
-
-/* BOUQUET */
-.bouquet{
-  position:fixed;
-  top:-15px;
-  font-size:26px;
-  animation:bouquetFall 8s linear forwards;
-}
-@keyframes bouquetFall{to{transform:translateY(110vh)}}
+#error{margin-top:12px;font-size:14px}
 
 /* CARD */
 .card{
@@ -91,14 +52,11 @@ button{
   padding:18px;
   border-radius:22px;
   background:rgba(255,255,255,0.18);
-  backdrop-filter:blur(8px);
 }
 </style>
 </head>
 
 <body>
-
-<button id="muteBtn" onclick="toggleMusic()">🔊</button>
 
 <!-- LOCK -->
 <div id="lockScreen">
@@ -111,10 +69,10 @@ button{
 
 <!-- MUSIC -->
 <audio id="bgMusic" loop>
-  <source src="https://cdn.pixabay.com/audio/2023/03/27/audio_2c9d8c0b61.mp3" type="audio/mpeg">
+  <source src="https://cdn.pixabay.com/audio/2023/03/27/audio_2c9d8c0b61.mp3">
 </audio>
 
-<!-- VALENTINE QUESTION -->
+<!-- QUESTION -->
 <section>
   <h2>One important question 🤭💞</h2>
   <p>Will u be my valentine<br><b>Varshi bangaram</b> 💖</p>
@@ -128,46 +86,46 @@ button{
   <h2>💖 Match Summary</h2>
 
   <div class="card">
-    <h3>🏏 Love Match</h3>
     <p>📅 First meet: <b>27/01/2025</b></p>
     <p>🤝 Partnership: <b>Ari & Varshi – 1 year ♾️</b></p>
-    <p id="matchStatus">Forever together ♾️💖</p>
     <p>👑 King Kohli mode: ON</p>
   </div>
 
-  <!-- PHOTOS -->
   <img src="https://i.ibb.co/bRJmpcST/IMG-20260202-161418.jpg"
-       style="max-width:260px;border-radius:20px;margin:15px 0">
+       style="max-width:260px;border-radius:20px">
 
-  <!-- YOUR MESSAGE -->
   <p style="background:rgba(255,255,255,0.15);
             padding:18px;
             border-radius:18px;
-            line-height:1.6;
-            font-size:15px;">
+            line-height:1.6;">
     Thank you bangaram for accepting me as your valentine 😚<br><br>
-
     really so much lucky for that manam kalavalemi kabatti ila online lo msg chesthuna  
     and ala weird ga chuddankandi mee photo petanu ani naa photo pedatha  
     comedy ga untundi 😅<br><br>
-
     so finally thank you maa 💖<br><br>
-
     And love you 😘🫂<br><br>
-
-    <b>From your<br>
-    Choco ( ari )</b>
+    <b>From your<br>Choco ( ari )</b>
   </p>
 
-  <!-- END LOVE -->
+  <!-- ⭐ RATING -->
   <div style="margin-top:30px;">
-    <h3>One last thing 🤍</h3>
-    <p>Can I get a hug or a kiss? 🤭</p>
-    <div style="font-size:32px;">
-      <span onclick="endLove('😘')">😘</span>
-      <span onclick="endLove('🫂')" style="margin-left:20px">🫂</span>
+    <h3>Rate this surprise 💖</h3>
+
+    <div style="font-size:30px;">
+      <span onclick="rate('😘')">😘</span>
+      <span onclick="rate('🫂')" style="margin:0 15px;">🫂</span>
+      <span onclick="rate('⭐')">⭐</span>
     </div>
-    <p id="endMsg"></p>
+
+    <div style="font-size:26px;margin-top:12px;">
+      <span onclick="rateStar(1)">⭐</span>
+      <span onclick="rateStar(2)">⭐</span>
+      <span onclick="rateStar(3)">⭐</span>
+      <span onclick="rateStar(4)">⭐</span>
+      <span onclick="rateStar(5)">⭐</span>
+    </div>
+
+    <p id="ratingMsg"></p>
   </div>
 
   <footer>— Arihanth</footer>
@@ -177,36 +135,21 @@ button{
 const PASSWORD="chococream";
 const slides=document.querySelectorAll("section");
 let current=0;
-
-/* MUSIC */
-function playMusicSafely(){
-  if(bgMusic.paused){
-    bgMusic.volume=0.7;
-    bgMusic.play().catch(()=>{});
-  }
-}
-function toggleMusic(){
-  if(bgMusic.paused){playMusicSafely();muteBtn.innerText="🔊";}
-  else{bgMusic.pause();muteBtn.innerText="🔇";}
-}
+let rated=false;
 
 /* PASSWORD */
 function checkPassword(){
   if(passwordInput.value===PASSWORD){
-    unlock();
+    lockScreen.style.display="none";
+    slides[0].classList.add("active");
   }else{
-    error.innerHTML="You already broke into my heart 💖<br>why do you need a password again 😌";
-    setTimeout(unlock,1000);
+    error.innerHTML="You already broke into my heart 💖<br>why do you need password 😌";
+    setTimeout(()=>{lockScreen.style.display="none";slides[0].classList.add("active");},1000);
   }
-}
-function unlock(){
-  lockScreen.style.display="none";
-  slides[0].classList.add("active");
 }
 
 /* NAV */
 function next(){
-  if(current>=slides.length-1) return;
   slides[current].classList.remove("active");
   current++;
   slides[current].classList.add("active");
@@ -214,47 +157,27 @@ function next(){
 
 /* QUESTION */
 function valYes(){
-  lockBtns();
   valMsg.innerText="That made my whole day 🥹💖";
-  playMusicSafely();
+  bgMusic.play();
   next();
 }
 function valNo(){
-  lockBtns();
   valMsg.innerText="Hehe 🤭 I’ll take that as a shy yes 💖";
-  playMusicSafely();
+  bgMusic.play();
   next();
 }
-function lockBtns(){
-  document.querySelectorAll("button").forEach(b=>b.disabled=true);
+
+/* RATING */
+function rate(e){
+  if(rated) return;
+  rated=true;
+  ratingMsg.innerText="Aww 🥹 "+e+" rating means a lot 💖";
 }
-
-/* END LOVE */
-function endLove(e){
-  endMsg.innerText = e==="😘"
-    ?"That kiss made my heart melt 💖"
-    :"That hug felt like home 🫂";
+function rateStar(n){
+  if(rated) return;
+  rated=true;
+  ratingMsg.innerText="Wow "+"⭐".repeat(n)+" perfect rating 🥰";
 }
-
-/* HEARTS */
-setInterval(()=>{
-  if(document.querySelectorAll(".heart").length>6)return;
-  const h=document.createElement("div");
-  h.className="heart";h.innerText="❤️";
-  h.style.left=Math.random()*100+"vw";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),6000);
-},1800);
-
-/* BOUQUETS */
-setInterval(()=>{
-  if(document.querySelectorAll(".bouquet").length>2)return;
-  const b=document.createElement("div");
-  b.className="bouquet";b.innerText="💐";
-  b.style.left=Math.random()*90+"vw";
-  document.body.appendChild(b);
-  setTimeout(()=>b.remove(),8000);
-},4200);
 </script>
 
 </body>
