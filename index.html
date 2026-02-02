@@ -1,31 +1,153 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Love Story ❤️</title>
 
-  <head>
-    <meta charset="UTF-8">
-    <title>HTML pen</title>
-    
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  color: white;
+  text-align: center;
+}
 
-  </head>
-    
-  <body>
-  <!-- do not change the markup -->
-<a href="#">
-  Checkout
-</a>
+section {
+  min-height: 100vh;
+  padding: 40px 20px;
+}
 
-<!-- 
-1. make look like a button
-2. change text color red on hover
+h1, h2 {
+  margin-bottom: 10px;
+}
 
-Cannot change html, only css.
-Look closely at
--->  
+button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 25px;
+  background: white;
+  color: #ff4d6d;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+}
 
-<div></div>
-<div></div>
-<div></div>
-    
-  </body>
-  
+button:hover {
+  background: #ffe3ea;
+}
+
+.slide {
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+.question {
+  margin-top: 20px;
+}
+
+.scoreboard {
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+footer {
+  font-size: 14px;
+  opacity: 0.9;
+}
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+<audio autoplay loop>
+  <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Lee_Rosevere/Music_for_Podcasts_3/Lee_Rosevere_-_07_-_Desert_of_the_Future.mp3">
+</audio>
+
+<section class="slide active">
+  <h1>Hey ❤️</h1>
+  <h2>This is just for you</h2>
+  <button onclick="nextSlide()">Start</button>
+</section>
+
+<section class="slide">
+  <h1>Our Partnership 🏏</h1>
+  <p>Just like Virat & Anushka</p>
+  <div class="scoreboard">
+    Partnership: <b>1 Year Completed</b><br>
+    Not Out ♾️
+  </div>
+  <button onclick="nextSlide()">Next</button>
+</section>
+
+<section class="slide">
+  <h1>Our Journey ⏳</h1>
+  <p id="counter"></p>
+  <button onclick="nextSlide()">Next</button>
+</section>
+
+<section class="slide">
+  <h1>One Question ❓</h1>
+  <div class="question">
+    <p>Our partnership is most like?</p>
+    <button onclick="saveAnswer('Virat & Anushka')">Virat & Anushka</button><br><br>
+    <button onclick="saveAnswer('Forever Together')">Forever Together</button>
+  </div>
+</section>
+
+<section class="slide">
+  <h1>Message 💌</h1>
+  <p>
+    Give you a kiss 😘 and a hug 🤗 <br>
+    Sorry if I hugged you without permission ❤️
+  </p>
+  <button onclick="downloadAnswers()">Finish</button>
+</section>
+
+<footer>
+  Made with ❤️ by Arihanth<br>
+  Thank you for being mine
+</footer>
+
+<script>
+let current = 0;
+const slides = document.querySelectorAll(".slide");
+let answers = [];
+
+function nextSlide() {
+  slides[current].classList.remove("active");
+  current++;
+  slides[current].classList.add("active");
+}
+
+// Counter from 27/01/25
+const startDate = new Date("2025-01-27");
+setInterval(() => {
+  const now = new Date();
+  const diff = now - startDate;
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  document.getElementById("counter").innerText =
+    `We have completed ${days} days together ❤️`;
+}, 1000);
+
+function saveAnswer(ans) {
+  answers.push(ans);
+  nextSlide();
+}
+
+function downloadAnswers() {
+  const text = "Her Answer:\n" + answers.join("\n");
+  const blob = new Blob([text], { type: "text/plain" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "our_answers.txt";
+  link.click();
+}
+</script>
+
+</body>
 </html>
