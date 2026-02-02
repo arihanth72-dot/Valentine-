@@ -2,145 +2,127 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For Varshitha</title>
+<title>Valentine 💖</title>
 
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: "Poppins", sans-serif;
   background: linear-gradient(135deg, #ff758c, #ff7eb3);
   color: white;
-  text-align: center;
   overflow-x: hidden;
 }
 
-/* sections */
 section {
+  display: none;
   min-height: 100vh;
   padding: 40px 20px;
-  display: none;
-  position: relative;
-  z-index: 1;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 section.active {
   display: block;
 }
 
-/* buttons */
+h1, h2 {
+  margin-bottom: 20px;
+}
+
+.options button,
 button {
   padding: 12px 22px;
-  border: none;
+  margin: 10px;
   border-radius: 25px;
-  background: white;
-  color: #ff4d6d;
+  border: none;
   font-size: 16px;
   cursor: pointer;
-  margin: 10px;
-  transition: transform 0.3s ease;
 }
 
 .options button {
-  display: block;
-  width: 90%;
-  max-width: 320px;
-  margin: 10px auto;
+  background: white;
+  color: #ff4d6d;
 }
 
-/* NO button shrink */
-#noBtn {
-  transition: transform 0.3s ease;
+button {
+  background: #ff4d6d;
+  color: white;
 }
 
-/* photo */
-img.photo {
-  width: 230px;
-  max-width: 85%;
-  border-radius: 20px;
-  margin: 20px auto;
-  display: block;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+footer {
+  margin-top: 30px;
+  opacity: 0.8;
 }
 
-/* input */
-input {
-  padding: 12px;
+/* LOCK SCREEN */
+#lockScreen {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 999;
+}
+
+#lockScreen input {
+  padding: 10px;
   border-radius: 20px;
   border: none;
-  width: 220px;
   text-align: center;
-  font-size: 16px;
 }
 
-/* answer cards */
+#error {
+  margin-top: 10px;
+}
+
+/* ANSWERS */
 .answer-card {
-  background: rgba(255,255,255,0.15);
-  padding: 12px;
-  border-radius: 12px;
-  margin: 10px auto;
-  max-width: 320px;
+  background: rgba(255,255,255,0.2);
+  padding: 10px;
+  margin: 10px;
+  border-radius: 15px;
 }
 
-/* heart rain */
+/* HEART RAIN */
 .heart {
   position: fixed;
-  top: -20px;
-  font-size: 18px;
-  opacity: 0.8;
-  animation: fall linear forwards;
-  pointer-events: none;
-  z-index: 0;
+  top: -10px;
+  animation: fall linear infinite;
 }
 
 @keyframes fall {
   to {
     transform: translateY(110vh);
-    opacity: 0;
   }
-}
-
-footer {
-  font-size: 14px;
-  opacity: 0.9;
-  margin-top: 25px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🎵 TELUGU LOVE BGM -->
+<!-- LOCK SCREEN -->
+<div id="lockScreen">
+  <h1>Enter the password 💌</h1>
+  <input type="password" id="passwordInput" placeholder="Password">
+  <br><br>
+  <button onclick="checkPassword()">Unlock</button>
+  <div id="error"></div>
+</div>
+
 <audio id="bgMusic" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2023/03/06/audio_8c6b1c9d7b.mp3" type="audio/mpeg">
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
 </audio>
 
-<!-- PASSWORD SCREEN -->
-<section class="active" id="lockScreen">
-  <h1>Private Page 🔒</h1>
-  <p>Enter the password</p>
-  <input type="password" id="passwordInput" placeholder="Password">
-  <br>
-  <button onclick="checkPassword()">Unlock</button>
-  <p id="error" style="color:#ffd6d6;"></p>
-</section>
-
-<!-- SLIDE 1 -->
+<!-- INTRO -->
 <section>
-  <h1>Hey Varshitha</h1>
-  <h2>My Bangaram ❤️</h2>
-  <p>Will you be my Valentine?</p>
-
-  <button onclick="fireConfetti(); next()">Yes</button>
-  <button id="noBtn" onclick="shrinkNo()">No</button>
-</section>
-
-<!-- SLIDE 2 -->
-<section>
-  <img src="https://i.ibb.co/twH34v1F/Screenshot-2026-02-02-10-20-45-82-965bbf4d18d205f782c6b8409c5773a4.jpg"
-       class="photo" alt="Varshitha">
-  <h2>I love you.</h2>
-  <p>You mean a lot to me.</p>
-  <button onclick="next()">Next</button>
+  <h1>Hey 🤍</h1>
+  <p>
+    Every little smile of yours means more to me than you know 💖<br>
+    Will you walk through this with me?
+  </p>
+  <button onclick="next()">Continue</button>
 </section>
 
 <!-- MCQ 1 -->
@@ -178,14 +160,45 @@ footer {
 
 <!-- FINAL -->
 <section>
-  <h2>Thank you for answering</h2>
+  <h2>Thank you for answering 🤍</h2>
   <p>Your answers:</p>
   <div id="answerList"></div>
 
   <p>
-    Sending you a warm hug 🤍 <br>
-    and a gentle kiss 😘 <br><br>
-    If that felt too much, I’m sorry — I truly respect you.
+    Thank you for taking this little journey with me 🤍<br>
+    Every answer felt special, just like you.<br><br>
+    I’ll always value what we share and where we’re going ✨
+  </p>
+
+  <!-- PHOTO -->
+  <img src="https://i.ibb.co/bRJmpcST/IMG-20260202-161418.jpg" alt="Us"
+       style="
+         max-width: 220px;
+         width: 100%;
+         border-radius: 20px;
+         margin-top: 20px;
+         box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+       ">
+
+  <!-- MESSAGE -->
+  <p style="
+    margin-top: 20px;
+    font-size: 16px;
+    line-height: 1.6;
+    background: rgba(255,255,255,0.15);
+    padding: 18px;
+    border-radius: 18px;
+  ">
+    Thank you bangaram for accepting me as your valentine 😚<br><br>
+
+    really so much lucky for that manam kalavalemi kabatti ila online lo msg chesthuna
+    and ala wierd ga chuddankandi mee photo petanu ani naa photo pedatha comedy ga untundi 😅<br><br>
+
+    so finally thank you maa 💖<br>
+    And love you 😘🫂<br><br>
+
+    <strong>From your<br>
+    Choco ( Ari )</strong>
   </p>
 
   <button onclick="downloadAnswers()">Download answers</button>
@@ -198,50 +211,32 @@ footer {
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
-/* PASSWORD */
 const PASSWORD = "chococream";
-
-/* SLIDES */
 let slides = document.querySelectorAll("section");
 let current = 0;
 let answers = [];
-let noScale = 1;
 
 /* PASSWORD CHECK */
 function checkPassword() {
   const input = document.getElementById("passwordInput").value;
   if (input === PASSWORD) {
     fireConfetti();
-
-    const music = document.getElementById("bgMusic");
-    music.volume = 0.4;
-    music.play();
-
-    setTimeout(() => {
-      document.getElementById("lockScreen").classList.remove("active");
-      slides[1].classList.add("active");
-      current = 1;
-    }, 600);
+    document.getElementById("bgMusic").play();
+    document.getElementById("lockScreen").style.display = "none";
+    slides[0].classList.add("active");
   } else {
-    document.getElementById("error").innerText = "Wrong password. Try again.";
+    document.getElementById("error").innerText = "Wrong password 😅";
   }
 }
 
-/* NAV */
+/* NAVIGATION */
 function next() {
   slides[current].classList.remove("active");
   current++;
   slides[current].classList.add("active");
 }
 
-/* NO BUTTON SHRINK */
-function shrinkNo() {
-  noScale -= 0.15;
-  if (noScale < 0.3) noScale = 0.3;
-  document.getElementById("noBtn").style.transform = `scale(${noScale})`;
-}
-
-/* ANSWERS */
+/* SAVE ANSWERS */
 function saveAnswer(ans) {
   answers.push(ans);
   if (current === slides.length - 2) showAnswers();
@@ -272,13 +267,308 @@ function downloadAnswers() {
 /* REPLAY */
 function replay() {
   fireConfetti();
-  slides[current].classList.remove("active");
-  current = 0;
-  answers = [];
-  document.getElementById("lockScreen").classList.add("active");
+  location.reload();
 }
 
-/* HEART CONFETTI */
+/* CONFETTI */
+function fireConfetti() {
+  confetti({
+    particleCount: 120,
+    spread: 70,
+    origin: { y: 0.6 },
+    colors: ['#ff4d6d', '#ff758c', '#ff9a9e'],
+    shapes: ['heart']
+  });
+}
+
+/* HEART RAIN */
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (12 + Math.random() * 12) + "px";
+  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 8000);
+}
+setInterval(createHeart, 400);
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Valentine 💖</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  color: white;
+  overflow-x: hidden;
+}
+
+section {
+  display: none;
+  min-height: 100vh;
+  padding: 40px 20px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+section.active {
+  display: block;
+}
+
+h1, h2 {
+  margin-bottom: 20px;
+}
+
+.options button,
+button {
+  padding: 12px 22px;
+  margin: 10px;
+  border-radius: 25px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.options button {
+  background: white;
+  color: #ff4d6d;
+}
+
+button {
+  background: #ff4d6d;
+  color: white;
+}
+
+footer {
+  margin-top: 30px;
+  opacity: 0.8;
+}
+
+/* LOCK SCREEN */
+#lockScreen {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 999;
+}
+
+#lockScreen input {
+  padding: 10px;
+  border-radius: 20px;
+  border: none;
+  text-align: center;
+}
+
+#error {
+  margin-top: 10px;
+}
+
+/* ANSWERS */
+.answer-card {
+  background: rgba(255,255,255,0.2);
+  padding: 10px;
+  margin: 10px;
+  border-radius: 15px;
+}
+
+/* HEART RAIN */
+.heart {
+  position: fixed;
+  top: -10px;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOCK SCREEN -->
+<div id="lockScreen">
+  <h1>Enter the password 💌</h1>
+  <input type="password" id="passwordInput" placeholder="Password">
+  <br><br>
+  <button onclick="checkPassword()">Unlock</button>
+  <div id="error"></div>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+</audio>
+
+<!-- INTRO -->
+<section>
+  <h1>Hey 🤍</h1>
+  <p>
+    Every little smile of yours means more to me than you know 💖<br>
+    Will you walk through this with me?
+  </p>
+  <button onclick="next()">Continue</button>
+</section>
+
+<!-- MCQ 1 -->
+<section>
+  <h2>What matters most to you in us?</h2>
+  <div class="options">
+    <button onclick="saveAnswer('Trust')">Trust</button>
+    <button onclick="saveAnswer('Understanding')">Understanding</button>
+    <button onclick="saveAnswer('Honesty')">Honesty</button>
+    <button onclick="saveAnswer('All of these')">All of these</button>
+  </div>
+</section>
+
+<!-- MCQ 2 -->
+<section>
+  <h2>How would you describe us?</h2>
+  <div class="options">
+    <button onclick="saveAnswer('Comfortable')">Comfortable</button>
+    <button onclick="saveAnswer('Supportive')">Supportive</button>
+    <button onclick="saveAnswer('Meaningful')">Meaningful</button>
+    <button onclick="saveAnswer('Still growing')">Still growing</button>
+  </div>
+</section>
+
+<!-- MCQ 3 -->
+<section>
+  <h2>What do you value the most going forward?</h2>
+  <div class="options">
+    <button onclick="saveAnswer('Communication')">Communication</button>
+    <button onclick="saveAnswer('Respect')">Respect</button>
+    <button onclick="saveAnswer('Patience')">Patience</button>
+    <button onclick="saveAnswer('All equally')">All equally</button>
+  </div>
+</section>
+
+<!-- FINAL -->
+<section>
+  <h2>Thank you for answering 🤍</h2>
+  <p>Your answers:</p>
+  <div id="answerList"></div>
+
+  <p>
+    Thank you for taking this little journey with me 🤍<br>
+    Every answer felt special, just like you.<br><br>
+    I’ll always value what we share and where we’re going ✨
+  </p>
+
+  <!-- PHOTO -->
+  <img src="https://i.ibb.co/bRJmpcST/IMG-20260202-161418.jpg" alt="Us"
+       style="
+         max-width: 220px;
+         width: 100%;
+         border-radius: 20px;
+         margin-top: 20px;
+         box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+       ">
+
+  <!-- MESSAGE -->
+  <p style="
+    margin-top: 20px;
+    font-size: 16px;
+    line-height: 1.6;
+    background: rgba(255,255,255,0.15);
+    padding: 18px;
+    border-radius: 18px;
+  ">
+    Thank you bangaram for accepting me as your valentine 😚<br><br>
+
+    really so much lucky for that manam kalavalemi kabatti ila online lo msg chesthuna
+    and ala wierd ga chuddankandi mee photo petanu ani naa photo pedatha comedy ga untundi 😅<br><br>
+
+    so finally thank you maa 💖<br>
+    And love you 😘🫂<br><br>
+
+    <strong>From your<br>
+    Choco ( Ari )</strong>
+  </p>
+
+  <button onclick="downloadAnswers()">Download answers</button>
+  <button onclick="replay()">Replay</button>
+
+  <footer>— Arihanth</footer>
+</section>
+
+<!-- CONFETTI -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+const PASSWORD = "chococream";
+let slides = document.querySelectorAll("section");
+let current = 0;
+let answers = [];
+
+/* PASSWORD CHECK */
+function checkPassword() {
+  const input = document.getElementById("passwordInput").value;
+  if (input === PASSWORD) {
+    fireConfetti();
+    document.getElementById("bgMusic").play();
+    document.getElementById("lockScreen").style.display = "none";
+    slides[0].classList.add("active");
+  } else {
+    document.getElementById("error").innerText = "Wrong password 😅";
+  }
+}
+
+/* NAVIGATION */
+function next() {
+  slides[current].classList.remove("active");
+  current++;
+  slides[current].classList.add("active");
+}
+
+/* SAVE ANSWERS */
+function saveAnswer(ans) {
+  answers.push(ans);
+  if (current === slides.length - 2) showAnswers();
+  next();
+}
+
+function showAnswers() {
+  const list = document.getElementById("answerList");
+  list.innerHTML = "";
+  answers.forEach((a, i) => {
+    const div = document.createElement("div");
+    div.className = "answer-card";
+    div.innerText = `Answer ${i + 1}: ${a}`;
+    list.appendChild(div);
+  });
+}
+
+/* DOWNLOAD */
+function downloadAnswers() {
+  const text = "Varshitha's answers:\n\n" + answers.join("\n");
+  const blob = new Blob([text], { type: "text/plain" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "answers.txt";
+  link.click();
+}
+
+/* REPLAY */
+function replay() {
+  fireConfetti();
+  location.reload();
+}
+
+/* CONFETTI */
 function fireConfetti() {
   confetti({
     particleCount: 120,
