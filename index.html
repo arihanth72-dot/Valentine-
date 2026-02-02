@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Our Love Story ❤️</title>
+<title>For Varshitha 💛</title>
 
 <style>
 body {
@@ -11,20 +11,19 @@ body {
   background: linear-gradient(135deg, #ff758c, #ff7eb3);
   color: white;
   text-align: center;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
-/* Slides */
-.slide {
-  display: none;
+section {
   min-height: 100vh;
-  padding: 60px 20px;
+  padding: 30px 20px;
+  display: none;
 }
-.active {
+
+section.active {
   display: block;
 }
 
-/* Button */
 button {
   padding: 12px 24px;
   border: none;
@@ -35,34 +34,54 @@ button {
   cursor: pointer;
   margin-top: 20px;
 }
+
 button:hover {
-  background: #ffe1ea;
+  background: #ffe0e6;
 }
 
-/* Hearts */
+.options button {
+  display: block;
+  width: 90%;
+  max-width: 320px;
+  margin: 10px auto;
+}
+
+img.photo {
+  width: 230px;
+  max-width: 85%;
+  border-radius: 20px;
+  margin: 20px auto;
+  display: block;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+footer {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-top: 25px;
+}
+
+/* hearts */
 .heart {
   position: fixed;
   top: -10px;
-  color: rgba(255,255,255,0.8);
-  font-size: 20px;
+  font-size: 18px;
   animation: fall linear infinite;
 }
 @keyframes fall {
-  from { transform: translateY(-10px); }
   to { transform: translateY(110vh); }
 }
 
-/* Scoreboard */
-.scoreboard {
-  font-size: 20px;
-  margin-top: 20px;
-}
-
-/* Footer */
-footer {
-  opacity: 0.85;
+/* music button */
+.music-btn {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  background: white;
+  color: #ff4d6d;
+  border-radius: 30px;
+  padding: 10px 15px;
   font-size: 14px;
-  margin-top: 30px;
 }
 </style>
 </head>
@@ -70,108 +89,137 @@ footer {
 <body>
 
 <!-- MUSIC -->
-<audio autoplay loop>
-  <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Lee_Rosevere/Music_for_Podcasts_3/Lee_Rosevere_-_04_-_Wishful_Thinking.mp3">
+<audio id="bgMusic" autoplay loop>
+  <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Lee_Rosevere/Music_for_Podcasts/Lee_Rosevere_-_04_-_Thoughtful.mp3">
 </audio>
+<button class="music-btn" onclick="toggleMusic()">🎵 Music</button>
 
 <!-- SLIDE 1 -->
-<section class="slide active">
-  <h1>Hey ❤️</h1>
-  <h2>This is just for you</h2>
-  <button onclick="nextSlide()">Start</button>
+<section class="active">
+  <h1>Hey Varshitha 💛</h1>
+  <h2>Bangaram aa 🧿✨</h2>
+  <p>This is made only for you aa 🥺💖</p>
+  <button onclick="next()">Start</button>
 </section>
 
-<!-- SLIDE 2 -->
-<section class="slide">
-  <h1>Our Partnership 🏏</h1>
-  <p>Just like <b>Virat & Anushka</b>, built on trust, respect & love ❤️</p>
-  <button onclick="nextSlide()">Next</button>
+<!-- SLIDE 2 (PHOTO) -->
+<section>
+  <h2>Just You 💕</h2>
+  <img src="https://i.ibb.co/twH34v1F/Screenshot-2026-02-02-10-20-45-82-965bbf4d18d205f782c6b8409c5773a4.jpg" class="photo">
+  <p>Varshitha aa… nuvvu ante chala istam 🥹💛</p>
+  <button onclick="next()">Next</button>
 </section>
 
 <!-- SLIDE 3 -->
-<section class="slide">
-  <h1>Our Journey ⏳</h1>
-  <p id="counter"></p>
-  <button onclick="nextSlide()">Next</button>
+<section>
+  <h2>Our Partnership 🏏❤️</h2>
+  <p>Like <b>Virat & Anushka</b></p>
+  <p>Calm + Fire 🔥</p>
+  <p>Support + Strength 💪</p>
+  <button onclick="next()">Next</button>
 </section>
 
 <!-- SLIDE 4 -->
-<section class="slide">
-  <h1>Quick Question 💌</h1>
-  <p>Our partnership is most like?</p>
-
-  <button onclick="saveAnswer('Virat & Anushka')">Virat & Anushka</button><br>
-  <button onclick="saveAnswer('Perfect Opening Pair')">Perfect Opening Pair</button><br>
-  <button onclick="saveAnswer('Unbreakable Team')">Unbreakable Team</button>
+<section>
+  <h2>Our Journey ⏳</h2>
+  <p id="counter"></p>
+  <p>Still counting aa ♾️💖</p>
+  <button onclick="next()">Next</button>
 </section>
 
-<!-- SLIDE 5 -->
-<section class="slide">
-  <h1>Our Scoreboard 🏏❤️</h1>
-  <div class="scoreboard">
-    Matches: ∞ <br>
-    Trust: 💯 <br>
-    Love: 💯💯
+<!-- QUESTION 1 -->
+<section>
+  <h2>One question aa ❓💛</h2>
+  <p>Our partnership is most like…</p>
+  <div class="options">
+    <button onclick="saveAnswer('Virat & Anushka')">Virat & Anushka 🏏❤️</button>
+    <button onclick="saveAnswer('Perfect Opening Pair')">Perfect Opening Pair ✨</button>
+    <button onclick="saveAnswer('Unbreakable Team')">Unbreakable Team 💑</button>
+    <button onclick="saveAnswer('Everything')">Everything aa 💖🥹</button>
   </div>
+</section>
 
-  <p style="margin-top:20px;">
-    Sending you a virtual hug 🤍 <br>
-    Sorry if I hugged without permission 🙈
+<!-- SLIDE 6 -->
+<section>
+  <h2>Our Scoreboard 🏏</h2>
+  <p>Years: 1+</p>
+  <p>Trust: 💯</p>
+  <p>Love: Unlimited ❤️</p>
+  <button onclick="next()">Next</button>
+</section>
+
+<!-- FINAL -->
+<section>
+  <h1>For You, Varshitha 💛</h1>
+  <p>
+    Oka hug 🤍 <br>
+    Oka kiss 😘 <br><br>
+    Permission lekunda hug chesunte sorry aa 🙈
   </p>
-
-  <footer>
-    — With love, <b>Arihanth</b> <br>
-    Thank you for being mine ❤️
-  </footer>
+  <p>Thank you for being my bangaram 🧿💖</p>
+  <footer>— Always yours, <b>Arihanth</b> 💛</footer>
+  <br>
+  <button onclick="replay()">Replay 🔁</button>
 </section>
 
 <script>
+let slides = document.querySelectorAll("section");
 let current = 0;
-const slides = document.querySelectorAll('.slide');
+let answers = [];
 
-function nextSlide() {
-  slides[current].classList.remove('active');
+function next() {
+  slides[current].classList.remove("active");
   current++;
-  slides[current].classList.add('active');
+  slides[current].classList.add("active");
 }
 
-/* COUNTER FROM 27/01/2025 */
+// replay
+function replay() {
+  slides[current].classList.remove("active");
+  current = 0;
+  slides[current].classList.add("active");
+}
+
+// music toggle
+function toggleMusic() {
+  const m = document.getElementById("bgMusic");
+  m.paused ? m.play() : m.pause();
+}
+
+// counter
 const startDate = new Date("2025-01-27");
 function updateCounter() {
   const now = new Date();
-  const diff = now - startDate;
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const years = Math.floor(days / 365);
-  const months = Math.floor((days % 365) / 30);
-  const remDays = days % 30;
-
+  const days = Math.floor((now - startDate) / (1000*60*60*24));
   document.getElementById("counter").innerText =
-    `${years} year(s), ${months} month(s), ${remDays} day(s) together ❤️`;
+    days + " days together aa ❤️";
 }
 updateCounter();
 
-/* SAVE ANSWER */
+// save answers
 function saveAnswer(ans) {
-  const text = `Her answer: ${ans}`;
-  const blob = new Blob([text], { type: "text/plain" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "our_answer.txt";
-  link.click();
-  nextSlide();
+  answers.push(ans);
+  const blob = new Blob(
+    ["Varshitha aa answer:\n" + answers.join("\n")],
+    { type: "text/plain" }
+  );
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "our_answers.txt";
+  a.click();
+  next();
 }
 
-/* HEARTS */
+// hearts
 setInterval(() => {
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerText = "❤️";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.animationDuration = (3 + Math.random() * 5) + "s";
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 8000);
-}, 400);
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerText = "❤️";
+  h.style.left = Math.random()*100 + "vw";
+  h.style.animationDuration = (3+Math.random()*5)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),8000);
+},400);
 </script>
 
 </body>
