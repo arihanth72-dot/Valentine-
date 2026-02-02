@@ -11,52 +11,58 @@ body {
   background: linear-gradient(135deg, #ff758c, #ff7eb3);
   color: white;
   text-align: center;
+  overflow: hidden;
 }
 
-section {
+/* Slides */
+.slide {
+  display: none;
   min-height: 100vh;
-  padding: 40px 20px;
+  padding: 60px 20px;
+}
+.active {
+  display: block;
 }
 
-h1, h2 {
-  margin-bottom: 10px;
-}
-
+/* Button */
 button {
-  padding: 12px 20px;
+  padding: 12px 24px;
   border: none;
   border-radius: 25px;
   background: white;
   color: #ff4d6d;
   font-size: 16px;
   cursor: pointer;
-  margin-top: 15px;
-}
-
-button:hover {
-  background: #ffe3ea;
-}
-
-.slide {
-  display: none;
-}
-
-.active {
-  display: block;
-}
-
-.question {
   margin-top: 20px;
 }
+button:hover {
+  background: #ffe1ea;
+}
 
+/* Hearts */
+.heart {
+  position: fixed;
+  top: -10px;
+  color: rgba(255,255,255,0.8);
+  font-size: 20px;
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  from { transform: translateY(-10px); }
+  to { transform: translateY(110vh); }
+}
+
+/* Scoreboard */
 .scoreboard {
   font-size: 20px;
   margin-top: 20px;
 }
 
+/* Footer */
 footer {
+  opacity: 0.85;
   font-size: 14px;
-  opacity: 0.9;
+  margin-top: 30px;
 }
 </style>
 </head>
@@ -65,88 +71,107 @@ footer {
 
 <!-- MUSIC -->
 <audio autoplay loop>
-  <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Lee_Rosevere/Music_for_Podcasts_3/Lee_Rosevere_-_07_-_Desert_of_the_Future.mp3">
+  <source src="https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Lee_Rosevere/Music_for_Podcasts_3/Lee_Rosevere_-_04_-_Wishful_Thinking.mp3">
 </audio>
 
+<!-- SLIDE 1 -->
 <section class="slide active">
   <h1>Hey ❤️</h1>
   <h2>This is just for you</h2>
   <button onclick="nextSlide()">Start</button>
 </section>
 
+<!-- SLIDE 2 -->
 <section class="slide">
   <h1>Our Partnership 🏏</h1>
-  <p>Just like Virat & Anushka</p>
-  <div class="scoreboard">
-    Partnership: <b>1 Year Completed</b><br>
-    Not Out ♾️
-  </div>
+  <p>Just like <b>Virat & Anushka</b>, built on trust, respect & love ❤️</p>
   <button onclick="nextSlide()">Next</button>
 </section>
 
+<!-- SLIDE 3 -->
 <section class="slide">
   <h1>Our Journey ⏳</h1>
   <p id="counter"></p>
   <button onclick="nextSlide()">Next</button>
 </section>
 
+<!-- SLIDE 4 -->
 <section class="slide">
-  <h1>One Question ❓</h1>
-  <div class="question">
-    <p>Our partnership is most like?</p>
-    <button onclick="saveAnswer('Virat & Anushka')">Virat & Anushka</button><br><br>
-    <button onclick="saveAnswer('Forever Together')">Forever Together</button>
+  <h1>Quick Question 💌</h1>
+  <p>Our partnership is most like?</p>
+
+  <button onclick="saveAnswer('Virat & Anushka')">Virat & Anushka</button><br>
+  <button onclick="saveAnswer('Perfect Opening Pair')">Perfect Opening Pair</button><br>
+  <button onclick="saveAnswer('Unbreakable Team')">Unbreakable Team</button>
+</section>
+
+<!-- SLIDE 5 -->
+<section class="slide">
+  <h1>Our Scoreboard 🏏❤️</h1>
+  <div class="scoreboard">
+    Matches: ∞ <br>
+    Trust: 💯 <br>
+    Love: 💯💯
   </div>
-</section>
 
-<section class="slide">
-  <h1>Message 💌</h1>
-  <p>
-    Give you a kiss 😘 and a hug 🤗 <br>
-    Sorry if I hugged you without permission ❤️
+  <p style="margin-top:20px;">
+    Sending you a virtual hug 🤍 <br>
+    Sorry if I hugged without permission 🙈
   </p>
-  <button onclick="downloadAnswers()">Finish</button>
-</section>
 
-<footer>
-  Made with ❤️ by Arihanth<br>
-  Thank you for being mine
-</footer>
+  <footer>
+    — With love, <b>Arihanth</b> <br>
+    Thank you for being mine ❤️
+  </footer>
+</section>
 
 <script>
 let current = 0;
-const slides = document.querySelectorAll(".slide");
-let answers = [];
+const slides = document.querySelectorAll('.slide');
 
 function nextSlide() {
-  slides[current].classList.remove("active");
+  slides[current].classList.remove('active');
   current++;
-  slides[current].classList.add("active");
+  slides[current].classList.add('active');
 }
 
-// Counter from 27/01/25
+/* COUNTER FROM 27/01/2025 */
 const startDate = new Date("2025-01-27");
-setInterval(() => {
+function updateCounter() {
   const now = new Date();
   const diff = now - startDate;
+
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const years = Math.floor(days / 365);
+  const months = Math.floor((days % 365) / 30);
+  const remDays = days % 30;
+
   document.getElementById("counter").innerText =
-    `We have completed ${days} days together ❤️`;
-}, 1000);
-
-function saveAnswer(ans) {
-  answers.push(ans);
-  nextSlide();
+    `${years} year(s), ${months} month(s), ${remDays} day(s) together ❤️`;
 }
+updateCounter();
 
-function downloadAnswers() {
-  const text = "Her Answer:\n" + answers.join("\n");
+/* SAVE ANSWER */
+function saveAnswer(ans) {
+  const text = `Her answer: ${ans}`;
   const blob = new Blob([text], { type: "text/plain" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "our_answers.txt";
+  link.download = "our_answer.txt";
   link.click();
+  nextSlide();
 }
+
+/* HEARTS */
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerText = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (3 + Math.random() * 5) + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 8000);
+}, 400);
 </script>
 
 </body>
