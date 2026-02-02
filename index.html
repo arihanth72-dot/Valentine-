@@ -1,142 +1,102 @@
-
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Valentine 💖</title>
 
 <style>
-body {
-  margin: 0;
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
-  color: white;
-  overflow-x: hidden;
+body{
+  margin:0;
+  font-family:Poppins,sans-serif;
+  background:linear-gradient(135deg,#ff758c,#ff7eb3);
+  color:white;
+  overflow-x:hidden;
+}
+section{
+  display:none;
+  min-height:100vh;
+  padding:40px 20px;
+  text-align:center;
+}
+section.active{display:block;}
+
+button{
+  padding:12px 22px;
+  margin:10px;
+  border-radius:25px;
+  border:none;
+  background:#ff4d6d;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
 }
 
-section {
-  display: none;
-  min-height: 100vh;
-  padding: 40px 20px;
-  text-align: center;
-  box-sizing: border-box;
+/* LOCK */
+#lockScreen{
+  position:fixed;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#ff758c,#ff7eb3);
+  z-index:999;
+}
+#lockScreen input{
+  padding:10px;
+  border-radius:20px;
+  border:none;
+  text-align:center;
+}
+#error{margin-top:15px;min-height:22px}
+
+/* MUTE */
+#muteBtn{
+  position:fixed;
+  top:15px;
+  right:15px;
+  z-index:1000;
+  border-radius:50%;
+  padding:10px 14px;
+  font-size:16px;
+  background:rgba(0,0,0,0.3);
+  border:none;
+  color:white;
+  cursor:pointer;
 }
 
-section.active {
-  display: block;
+/* FADE */
+.fade-group{opacity:0;transform:translateY(18px);animation:fade 1.2s forwards}
+.fade-delay{animation-delay:.6s}
+.fade-in{opacity:0;transform:translateY(15px);animation:fade 1.2s forwards;animation-delay:1s}
+@keyframes fade{to{opacity:1;transform:none}}
+
+/* SHAKE */
+.shake{animation:shake .4s}
+@keyframes shake{
+  0%{transform:translateX(0)}
+  25%{transform:translateX(-5px)}
+  50%{transform:translateX(5px)}
+  75%{transform:translateX(-5px)}
+  100%{transform:translateX(0)}
 }
 
-h1, h2, h3 {
-  margin-bottom: 20px;
+/* HEARTS (OPTIMIZED) */
+.heart{
+  position:fixed;
+  top:-10px;
+  font-size:14px;
+  animation:fall 6s linear forwards;
 }
-
-.options button,
-button {
-  padding: 12px 22px;
-  margin: 10px;
-  border-radius: 25px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.options button {
-  background: white;
-  color: #ff4d6d;
-}
-
-button {
-  background: #ff4d6d;
-  color: white;
-}
-
-footer {
-  margin-top: 30px;
-  opacity: 0.8;
-}
-
-/* LOCK SCREEN */
-#lockScreen {
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  z-index: 999;
-}
-
-#lockScreen input {
-  padding: 10px;
-  border-radius: 20px;
-  border: none;
-  text-align: center;
-}
-
-#error {
-  margin-top: 15px;
-  min-height: 22px;
-}
-
-/* ANSWERS */
-.answer-card {
-  background: rgba(255,255,255,0.2);
-  padding: 10px;
-  margin: 10px;
-  border-radius: 15px;
-}
-
-/* HEART RAIN */
-.heart {
-  position: fixed;
-  top: -10px;
-  animation: fall linear infinite;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(110vh);
-  }
-}
-
-/* FADE ANIMATIONS */
-.fade-group {
-  opacity: 0;
-  transform: translateY(18px);
-  animation: fadeGroup 1.3s ease forwards;
-}
-
-.fade-delay {
-  animation-delay: 0.6s;
-}
-
-.fade-in {
-  opacity: 0;
-  transform: translateY(15px);
-  animation: fadeUp 1.2s ease forwards;
-  animation-delay: 1.2s;
-}
-
-@keyframes fadeGroup {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+@keyframes fall{to{transform:translateY(110vh)}}
 </style>
 </head>
 
 <body>
 
-<!-- LOCK SCREEN -->
+<button id="muteBtn" onclick="toggleMusic()">🔊</button>
+
+<!-- LOCK -->
 <div id="lockScreen">
   <h1>Enter the password 💌</h1>
   <input type="password" id="passwordInput" placeholder="Password">
@@ -145,85 +105,71 @@ footer {
   <div id="error"></div>
 </div>
 
+<!-- SAFE TELUGU STYLE MUSIC -->
 <audio id="bgMusic" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+  <source src="https://cdn.pixabay.com/audio/2023/03/27/audio_2c9d8c0b61.mp3" type="audio/mpeg">
 </audio>
 
 <!-- INTRO -->
 <section>
   <h1>Hey 🤍</h1>
-  <p>
-    Every little smile of yours means more to me than you know 💖<br>
-    Will you walk through this with me?
-  </p>
-  <button onclick="next()">Continue</button>
-</section>
-
-<!-- MCQs -->
-<section>
-  <h2>What matters most to you in us?</h2>
-  <div class="options">
-    <button onclick="saveAnswer('Trust')">Trust</button>
-    <button onclick="saveAnswer('Understanding')">Understanding</button>
-    <button onclick="saveAnswer('Honesty')">Honesty</button>
-    <button onclick="saveAnswer('All of these')">All of these</button>
+  <p>Can I get a hug or a kiss before we continue? 🤭</p>
+  <div style="font-size:32px;">
+    <span onclick="introLove('😘')" style="cursor:pointer;">😘</span>
+    <span onclick="introLove('🫂')" style="cursor:pointer;margin-left:20px;">🫂</span>
   </div>
+  <p id="introMsg"></p>
 </section>
 
+<!-- VALENTINE -->
 <section>
-  <h2>How would you describe us?</h2>
-  <div class="options">
-    <button onclick="saveAnswer('Comfortable')">Comfortable</button>
-    <button onclick="saveAnswer('Supportive')">Supportive</button>
-    <button onclick="saveAnswer('Meaningful')">Meaningful</button>
-    <button onclick="saveAnswer('Still growing')">Still growing</button>
-  </div>
-</section>
-
-<section>
-  <h2>What do you value the most going forward?</h2>
-  <div class="options">
-    <button onclick="saveAnswer('Communication')">Communication</button>
-    <button onclick="saveAnswer('Respect')">Respect</button>
-    <button onclick="saveAnswer('Patience')">Patience</button>
-    <button onclick="saveAnswer('All equally')">All equally</button>
-  </div>
-</section>
-
-<!-- YES / NO -->
-<section>
-  <h2>One last question 😌</h2>
-  <p>Will you always stay like this… simple & special to me? 💖</p>
-  <button onclick="yesClicked()">Yes 💖</button>
-  <button id="noBtn" onmouseover="moveNo()">No 😅</button>
-  <p id="playMsg"></p>
+  <h2>One important question 🤭💞</h2>
+  <p>Will u be my valentine<br><b>Varshi bangaram</b> 🤭💞👉👈</p>
+  <button onclick="valYes()">Yes 💖</button>
+  <button id="valNoBtn" onclick="valNo()">No 😅</button>
+  <p id="valMsg"></p>
 </section>
 
 <!-- FINAL -->
 <section>
-  <h2>Thank you 🤍</h2>
-  <div id="answerList"></div>
+  <h2>💖 Match Summary</h2>
 
-  <img src="https://i.ibb.co/bRJmpcST/IMG-20260202-161418.jpg"
-       class="fade-group"
-       style="max-width:220px;width:100%;border-radius:20px;margin-top:20px;">
+  <!-- RELATIONSHIP BAR -->
+  <div style="max-width:280px;margin:15px auto;background:rgba(255,255,255,.15);padding:15px;border-radius:18px">
+    <h3>💞 Our Status</h3>
+    <div style="background:rgba(255,255,255,.3);height:14px;border-radius:10px;overflow:hidden">
+      <div id="scoreBar" style="height:100%;width:0%;background:linear-gradient(90deg,#ff4d6d,#ff9a9e);transition:.6s"></div>
+    </div>
+    <p id="statusText">Just started 💫</p>
+  </div>
+
+  <!-- CRICKET SCOREBOARD -->
+  <div style="max-width:280px;margin:20px auto;background:rgba(0,0,0,.25);padding:15px;border-radius:18px">
+    <h3>🏏 Love Scorecard</h3>
+    <p style="font-size:22px"><b id="runs">0</b>/<b>0</b></p>
+    <p>Overs: <span id="overs">0.0</span></p>
+    <p style="font-size:14px;margin-top:10px;">
+      📅 First meet: <b>27/01/2025</b><br>
+      ⏳ Friends since: <b><span id="daysTogether">0</span> days</b><br>
+      🤝 Partnership: <b>Ari & Varshi – <span id="partnership">0*</span></b>
+    </p>
+    <p id="matchStatus">Building partnership 💖</p>
+    <p style="font-size:13px;">👑 King Kohli mode: ON</p>
+  </div>
 
   <p class="fade-group fade-delay"
-     style="background:rgba(255,255,255,0.15);padding:18px;border-radius:18px;">
+     style="background:rgba(255,255,255,.15);padding:18px;border-radius:18px">
     Thank you bangaram for accepting me as your valentine 😚<br><br>
-    really so much lucky for that manam kalavalemi kabatti ila online lo msg chesthuna
-    and ala wierd ga chuddankandi mee photo petanu ani naa photo pedatha comedy ga untundi 😅<br><br>
-    so finally thank you maa 💖<br>
     And love you 😘🫂<br><br>
-    <strong>From your<br>Choco ( Ari )</strong>
+    <b>From your<br>Choco ( Ari )</b>
   </p>
 
   <!-- RATING -->
-  <div id="ratingSection" class="fade-in">
-    <h3>Rate this little surprise 😌</h3>
-    <span onclick="rateOnce('😘')">😘</span>
-    <span onclick="rateOnce('🫂')">🫂</span>
-    <span onclick="rateOnce('⭐')">⭐</span>
+  <div class="fade-in">
+    <h3>Rate this 😌</h3>
+    <span onclick="rateOnce()" style="font-size:28px;cursor:pointer">😘</span>
+    <span onclick="rateOnce()" style="font-size:28px;cursor:pointer;margin:0 15px">🫂</span>
+    <span onclick="rateOnce()" style="font-size:28px;cursor:pointer">⭐</span>
     <p id="rateMsg"></p>
   </div>
 
@@ -233,91 +179,110 @@ footer {
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
-const PASSWORD = "chococream";
-const typeMsg =
-"You already broke into my heart 💖 why do you need a password again 😌";
+const PASSWORD="chococream";
+const firstMeetDate=new Date(2025,0,27);
+let slides=document.querySelectorAll("section");
+let current=0,attempts=0,rated=false;
+let score=0,runs=0,balls=0;
 
-let slides = document.querySelectorAll("section");
-let current = 0;
-let attempts = 0;
-let answers = [];
-let rated = false;
+/* CONFETTI (LIGHT) */
+function fireConfetti(){
+  confetti({particleCount:60,spread:60,origin:{y:0.7}});
+}
 
-function checkPassword() {
+/* PASSWORD */
+function checkPassword(){
   attempts++;
-  if (document.getElementById("passwordInput").value === PASSWORD) {
-    unlock();
-  } else if (attempts === 1) {
-    typeWriter(typeMsg, "error", 50, () => setTimeout(unlock, 2000));
+  if(passwordInput.value===PASSWORD) unlock();
+  else if(attempts===1){
+    typeText("You already broke into my heart 💖 why do you need a password again 😌","error",()=>setTimeout(unlock,1500));
   }
 }
-
-function typeWriter(text, id, speed, cb) {
-  const el = document.getElementById(id);
-  el.innerText = "";
-  let i = 0;
-  const t = setInterval(() => {
-    if (i < text.length) el.innerText += text.charAt(i++);
-    else { clearInterval(t); if (cb) cb(); }
-  }, speed);
+function typeText(t,id,cb){
+  let i=0,el=document.getElementById(id);el.innerText="";
+  let s=setInterval(()=>{i<t.length?el.innerText+=t[i++]: (clearInterval(s),cb&&cb())},40);
 }
-
-function unlock() {
+function unlock(){
   fireConfetti();
-  document.getElementById("bgMusic").play();
-  document.getElementById("lockScreen").style.display = "none";
+  lockScreen.style.display="none";
   slides[0].classList.add("active");
 }
-
-function next() {
+function next(){
   slides[current].classList.remove("active");
-  current++;
-  slides[current].classList.add("active");
+  slides[++current].classList.add("active");
+  if(current===slides.length-1) updateDaysTogether();
 }
 
-function saveAnswer(a) {
-  answers.push(a);
-  next();
+/* MUSIC */
+function toggleMusic(){
+  if(bgMusic.paused){bgMusic.play();muteBtn.innerText="🔊";}
+  else{bgMusic.pause();muteBtn.innerText="🔇";}
 }
 
-function yesClicked() {
-  fireConfetti();
-  document.getElementById("playMsg").innerText =
-  "You just made me smile 🥹💖";
-  setTimeout(next, 1200);
+/* DAYS */
+function updateDaysTogether(){
+  const t=new Date();t.setHours(0,0,0,0);
+  const s=new Date(firstMeetDate);s.setHours(0,0,0,0);
+  daysTogether.innerText=Math.max(0,Math.floor((t-s)/(1000*60*60*24)));
 }
 
-function moveNo() {
-  const b = document.getElementById("noBtn");
-  b.style.position = "absolute";
-  b.style.left = Math.random()*70+"%";
-  b.style.top = Math.random()*70+"%";
+/* SCORE */
+function updateScore(p){
+  score=Math.min(100,score+p);
+  scoreBar.style.width=score+"%";
+  statusText.innerText=
+    score<25?"Crush stage 🤭":
+    score<50?"Talking & smiling 😌":
+    score<75?"Something special 💖":
+    "Official Valentine 💞✨";
+}
+function updateCricket(r){
+  runs=Math.min(100,runs+r); balls+=6;
+  runsEl.innerText=runs;
+  overs.innerText=(balls/6).toFixed(1);
+  partnership.innerText=runs+"*";
+  matchStatus.innerText=runs>=100?"Match won by Love 💞🏆":"Building partnership 💖";
 }
 
-function rateOnce(e) {
-  if (rated) return;
-  rated = true;
-  fireConfetti();
-  document.getElementById("rateMsg").innerText =
-    e === "😘" ? "That melted my heart 💖"
-    : e === "🫂" ? "This hug means everything 🫂"
-    : "A star I’ll keep forever ⭐";
+/* INTRO */
+function introLove(e){
+  introMsg.innerText=e==="😘"?"That kiss made my heart skip 💖":"This hug feels perfect 🫂";
+  bgMusic.play();
+  fireConfetti(); updateScore(20); updateCricket(20);
+  setTimeout(next,1200);
 }
 
-function fireConfetti() {
-  confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+/* VALENTINE */
+function valYes(){
+  valMsg.innerText="That made my whole day 🥹💖";
+  fireConfetti(); updateScore(40); updateCricket(40);
+  setTimeout(next,1200);
+}
+function valNo(){
+  valMsg.innerText="Hehe 🤭 I’ll take that as a shy yes 💖";
+  valNoBtn.classList.add("shake");
+  setTimeout(()=>valNoBtn.classList.remove("shake"),400);
+  fireConfetti(); updateScore(40); updateCricket(40);
+  setTimeout(next,1600);
 }
 
-setInterval(() => {
-  const h = document.createElement("div");
-  h.className = "heart";
-  h.innerText = "❤️";
-  h.style.left = Math.random()*100+"vw";
-  h.style.fontSize = (12+Math.random()*12)+"px";
-  h.style.animationDuration = (4+Math.random()*4)+"s";
+/* RATING */
+function rateOnce(){
+  if(rated)return;
+  rated=true;
+  rateMsg.innerText="Perfect ending 💖";
+  fireConfetti(); updateScore(40); updateCricket(40);
+}
+
+/* HEART RAIN (LIMITED) */
+setInterval(()=>{
+  if(document.querySelectorAll(".heart").length>12)return;
+  const h=document.createElement("div");
+  h.className="heart";h.innerText="❤️";
+  h.style.left=Math.random()*100+"vw";
   document.body.appendChild(h);
-  setTimeout(() => h.remove(), 8000);
-}, 400);
+  setTimeout(()=>h.remove(),6000);
+},1200);
 </script>
 
 </body>
