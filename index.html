@@ -25,7 +25,7 @@ section.active {
   display: block;
 }
 
-h1, h2 {
+h1, h2, h3 {
   margin-bottom: 20px;
 }
 
@@ -74,7 +74,8 @@ footer {
 }
 
 #error {
-  margin-top: 10px;
+  margin-top: 15px;
+  min-height: 22px;
 }
 
 /* ANSWERS */
@@ -95,6 +96,38 @@ footer {
 @keyframes fall {
   to {
     transform: translateY(110vh);
+  }
+}
+
+/* FADE ANIMATIONS */
+.fade-group {
+  opacity: 0;
+  transform: translateY(18px);
+  animation: fadeGroup 1.3s ease forwards;
+}
+
+.fade-delay {
+  animation-delay: 0.6s;
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(15px);
+  animation: fadeUp 1.2s ease forwards;
+  animation-delay: 1.2s;
+}
+
+@keyframes fadeGroup {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>
@@ -158,6 +191,19 @@ footer {
   </div>
 </section>
 
+<!-- YES / NO PLAY -->
+<section>
+  <h2>One last question 😌</h2>
+  <p>Will you always stay like this… simple & special to me? 💖</p>
+
+  <div style="margin-top:30px;">
+    <button onclick="yesClicked()">Yes 💖</button>
+    <button id="noBtn" onmouseover="moveNo()">No 😅</button>
+  </div>
+
+  <p id="playMsg" style="margin-top:20px;"></p>
+</section>
+
 <!-- FINAL -->
 <section>
   <h2>Thank you for answering 🤍</h2>
@@ -170,36 +216,44 @@ footer {
     I’ll always value what we share and where we’re going ✨
   </p>
 
-  <!-- PHOTO -->
-  <img src="https://i.ibb.co/bRJmpcST/IMG-20260202-161418.jpg" alt="Us"
+  <img src="https://i.ibb.co/bRJmpcST/IMG-20260202-161418.jpg"
+       alt="Us"
+       class="fade-group"
        style="
-         max-width: 220px;
-         width: 100%;
-         border-radius: 20px;
-         margin-top: 20px;
-         box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+         max-width:220px;
+         width:100%;
+         border-radius:20px;
+         margin-top:20px;
+         box-shadow:0 10px 25px rgba(0,0,0,0.25);
        ">
 
-  <!-- MESSAGE -->
-  <p style="
-    margin-top: 20px;
-    font-size: 16px;
-    line-height: 1.6;
-    background: rgba(255,255,255,0.15);
-    padding: 18px;
-    border-radius: 18px;
-  ">
+  <p class="fade-group fade-delay"
+     style="
+       margin-top:20px;
+       font-size:16px;
+       line-height:1.6;
+       background:rgba(255,255,255,0.15);
+       padding:18px;
+       border-radius:18px;
+     ">
     Thank you bangaram for accepting me as your valentine 😚<br><br>
-
     really so much lucky for that manam kalavalemi kabatti ila online lo msg chesthuna
     and ala wierd ga chuddankandi mee photo petanu ani naa photo pedatha comedy ga untundi 😅<br><br>
-
     so finally thank you maa 💖<br>
     And love you 😘🫂<br><br>
-
-    <strong>From your<br>
-    Choco ( Ari )</strong>
+    <strong>From your<br>Choco ( Ari )</strong>
   </p>
+
+  <!-- RATING -->
+  <div class="fade-in" style="margin-top:30px;">
+    <h3>Rate this little surprise for me 😌</h3>
+    <div id="ratingBox" style="font-size:30px; margin-top:15px;">
+      <span onclick="rateOnce('😘', this)" style="cursor:pointer;">😘</span>
+      <span onclick="rateOnce('🫂', this)" style="cursor:pointer; margin:0 15px;">🫂</span>
+      <span onclick="rateOnce('⭐', this)" style="cursor:pointer;">⭐</span>
+    </div>
+    <p id="rateMsg" style="margin-top:15px;"></p>
+  </div>
 
   <button onclick="downloadAnswers()">Download answers</button>
   <button onclick="replay()">Replay</button>
@@ -207,7 +261,6 @@ footer {
   <footer>— Arihanth</footer>
 </section>
 
-<!-- CONFETTI -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
@@ -215,21 +268,51 @@ const PASSWORD = "chococream";
 let slides = document.querySelectorAll("section");
 let current = 0;
 let answers = [];
+let attempts = 0;
+let rated = false;
 
-/* PASSWORD CHECK */
+const typeMsg =
+  "Already u broke into my heart 💖 why u want password again 😌";
+
+/* PASSWORD */
 function checkPassword() {
   const input = document.getElementById("passwordInput").value;
+  attempts++;
+
   if (input === PASSWORD) {
-    fireConfetti();
-    document.getElementById("bgMusic").play();
-    document.getElementById("lockScreen").style.display = "none";
-    slides[0].classList.add("active");
-  } else {
-    document.getElementById("error").innerText = "Wrong password 😅";
+    unlock();
+  } else if (attempts === 1) {
+    typeWriter(typeMsg, "error", 50, () => {
+      setTimeout(unlock, 2000);
+    });
   }
 }
 
-/* NAVIGATION */
+/* TYPEWRITER */
+function typeWriter(text, id, speed, callback) {
+  const el = document.getElementById(id);
+  el.innerText = "";
+  let i = 0;
+  const t = setInterval(() => {
+    if (i < text.length) {
+      el.innerText += text.charAt(i);
+      i++;
+    } else {
+      clearInterval(t);
+      if (callback) callback();
+    }
+  }, speed);
+}
+
+/* UNLOCK */
+function unlock() {
+  fireConfetti();
+  document.getElementById("bgMusic").play();
+  document.getElementById("lockScreen").style.display = "none";
+  slides[0].classList.add("active");
+}
+
+/* NAV */
 function next() {
   slides[current].classList.remove("active");
   current++;
@@ -247,10 +330,50 @@ function showAnswers() {
   const list = document.getElementById("answerList");
   list.innerHTML = "";
   answers.forEach((a, i) => {
-    const div = document.createElement("div");
-    div.className = "answer-card";
-    div.innerText = `Answer ${i + 1}: ${a}`;
-    list.appendChild(div);
+    const d = document.createElement("div");
+    d.className = "answer-card";
+    d.innerText = `Answer ${i + 1}: ${a}`;
+    list.appendChild(d);
+  });
+}
+
+/* YES / NO */
+let noCount = 0;
+function moveNo() {
+  const btn = document.getElementById("noBtn");
+  btn.style.position = "absolute";
+  btn.style.left = Math.random() * 70 + "%";
+  btn.style.top = Math.random() * 70 + "%";
+  noCount++;
+
+  if (noCount === 2) {
+    document.getElementById("playMsg").innerText =
+      "Haha 😄 okay okay, I won’t trouble you 💖";
+  }
+  if (noCount >= 3) next();
+}
+
+function yesClicked() {
+  fireConfetti();
+  document.getElementById("playMsg").innerText =
+    "You just made me smile like crazy 🥹💖";
+  setTimeout(next, 1500);
+}
+
+/* RATING */
+function rateOnce(emoji) {
+  if (rated) return;
+  rated = true;
+  fireConfetti();
+  const msg = document.getElementById("rateMsg");
+
+  if (emoji === "😘") msg.innerText = "Aww 🥹 that made my heart melt 💖";
+  else if (emoji === "🫂") msg.innerText = "This hug means everything 🫂💞";
+  else msg.innerText = "I’ll keep this star forever ⭐😌";
+
+  document.querySelectorAll("#ratingBox span").forEach(s => {
+    s.style.pointerEvents = "none";
+    s.style.opacity = "0.6";
   });
 }
 
@@ -258,10 +381,10 @@ function showAnswers() {
 function downloadAnswers() {
   const text = "Varshitha's answers:\n\n" + answers.join("\n");
   const blob = new Blob([text], { type: "text/plain" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "answers.txt";
-  link.click();
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "answers.txt";
+  a.click();
 }
 
 /* REPLAY */
@@ -283,312 +406,14 @@ function fireConfetti() {
 
 /* HEART RAIN */
 function createHeart() {
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerText = "❤️";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (12 + Math.random() * 12) + "px";
-  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 8000);
-}
-setInterval(createHeart, 400);
-</script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Valentine 💖</title>
-
-<style>
-body {
-  margin: 0;
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
-  color: white;
-  overflow-x: hidden;
-}
-
-section {
-  display: none;
-  min-height: 100vh;
-  padding: 40px 20px;
-  text-align: center;
-  box-sizing: border-box;
-}
-
-section.active {
-  display: block;
-}
-
-h1, h2 {
-  margin-bottom: 20px;
-}
-
-.options button,
-button {
-  padding: 12px 22px;
-  margin: 10px;
-  border-radius: 25px;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.options button {
-  background: white;
-  color: #ff4d6d;
-}
-
-button {
-  background: #ff4d6d;
-  color: white;
-}
-
-footer {
-  margin-top: 30px;
-  opacity: 0.8;
-}
-
-/* LOCK SCREEN */
-#lockScreen {
-  position: fixed;
-  inset: 0;
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  z-index: 999;
-}
-
-#lockScreen input {
-  padding: 10px;
-  border-radius: 20px;
-  border: none;
-  text-align: center;
-}
-
-#error {
-  margin-top: 10px;
-}
-
-/* ANSWERS */
-.answer-card {
-  background: rgba(255,255,255,0.2);
-  padding: 10px;
-  margin: 10px;
-  border-radius: 15px;
-}
-
-/* HEART RAIN */
-.heart {
-  position: fixed;
-  top: -10px;
-  animation: fall linear infinite;
-}
-
-@keyframes fall {
-  to {
-    transform: translateY(110vh);
-  }
-}
-</style>
-</head>
-
-<body>
-
-<!-- LOCK SCREEN -->
-<div id="lockScreen">
-  <h1>Enter the password 💌</h1>
-  <input type="password" id="passwordInput" placeholder="Password">
-  <br><br>
-  <button onclick="checkPassword()">Unlock</button>
-  <div id="error"></div>
-</div>
-
-<audio id="bgMusic" loop>
-  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
-</audio>
-
-<!-- INTRO -->
-<section>
-  <h1>Hey 🤍</h1>
-  <p>
-    Every little smile of yours means more to me than you know 💖<br>
-    Will you walk through this with me?
-  </p>
-  <button onclick="next()">Continue</button>
-</section>
-
-<!-- MCQ 1 -->
-<section>
-  <h2>What matters most to you in us?</h2>
-  <div class="options">
-    <button onclick="saveAnswer('Trust')">Trust</button>
-    <button onclick="saveAnswer('Understanding')">Understanding</button>
-    <button onclick="saveAnswer('Honesty')">Honesty</button>
-    <button onclick="saveAnswer('All of these')">All of these</button>
-  </div>
-</section>
-
-<!-- MCQ 2 -->
-<section>
-  <h2>How would you describe us?</h2>
-  <div class="options">
-    <button onclick="saveAnswer('Comfortable')">Comfortable</button>
-    <button onclick="saveAnswer('Supportive')">Supportive</button>
-    <button onclick="saveAnswer('Meaningful')">Meaningful</button>
-    <button onclick="saveAnswer('Still growing')">Still growing</button>
-  </div>
-</section>
-
-<!-- MCQ 3 -->
-<section>
-  <h2>What do you value the most going forward?</h2>
-  <div class="options">
-    <button onclick="saveAnswer('Communication')">Communication</button>
-    <button onclick="saveAnswer('Respect')">Respect</button>
-    <button onclick="saveAnswer('Patience')">Patience</button>
-    <button onclick="saveAnswer('All equally')">All equally</button>
-  </div>
-</section>
-
-<!-- FINAL -->
-<section>
-  <h2>Thank you for answering 🤍</h2>
-  <p>Your answers:</p>
-  <div id="answerList"></div>
-
-  <p>
-    Thank you for taking this little journey with me 🤍<br>
-    Every answer felt special, just like you.<br><br>
-    I’ll always value what we share and where we’re going ✨
-  </p>
-
-  <!-- PHOTO -->
-  <img src="https://i.ibb.co/bRJmpcST/IMG-20260202-161418.jpg" alt="Us"
-       style="
-         max-width: 220px;
-         width: 100%;
-         border-radius: 20px;
-         margin-top: 20px;
-         box-shadow: 0 10px 25px rgba(0,0,0,0.25);
-       ">
-
-  <!-- MESSAGE -->
-  <p style="
-    margin-top: 20px;
-    font-size: 16px;
-    line-height: 1.6;
-    background: rgba(255,255,255,0.15);
-    padding: 18px;
-    border-radius: 18px;
-  ">
-    Thank you bangaram for accepting me as your valentine 😚<br><br>
-
-    really so much lucky for that manam kalavalemi kabatti ila online lo msg chesthuna
-    and ala wierd ga chuddankandi mee photo petanu ani naa photo pedatha comedy ga untundi 😅<br><br>
-
-    so finally thank you maa 💖<br>
-    And love you 😘🫂<br><br>
-
-    <strong>From your<br>
-    Choco ( Ari )</strong>
-  </p>
-
-  <button onclick="downloadAnswers()">Download answers</button>
-  <button onclick="replay()">Replay</button>
-
-  <footer>— Arihanth</footer>
-</section>
-
-<!-- CONFETTI -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-<script>
-const PASSWORD = "chococream";
-let slides = document.querySelectorAll("section");
-let current = 0;
-let answers = [];
-
-/* PASSWORD CHECK */
-function checkPassword() {
-  const input = document.getElementById("passwordInput").value;
-  if (input === PASSWORD) {
-    fireConfetti();
-    document.getElementById("bgMusic").play();
-    document.getElementById("lockScreen").style.display = "none";
-    slides[0].classList.add("active");
-  } else {
-    document.getElementById("error").innerText = "Wrong password 😅";
-  }
-}
-
-/* NAVIGATION */
-function next() {
-  slides[current].classList.remove("active");
-  current++;
-  slides[current].classList.add("active");
-}
-
-/* SAVE ANSWERS */
-function saveAnswer(ans) {
-  answers.push(ans);
-  if (current === slides.length - 2) showAnswers();
-  next();
-}
-
-function showAnswers() {
-  const list = document.getElementById("answerList");
-  list.innerHTML = "";
-  answers.forEach((a, i) => {
-    const div = document.createElement("div");
-    div.className = "answer-card";
-    div.innerText = `Answer ${i + 1}: ${a}`;
-    list.appendChild(div);
-  });
-}
-
-/* DOWNLOAD */
-function downloadAnswers() {
-  const text = "Varshitha's answers:\n\n" + answers.join("\n");
-  const blob = new Blob([text], { type: "text/plain" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "answers.txt";
-  link.click();
-}
-
-/* REPLAY */
-function replay() {
-  fireConfetti();
-  location.reload();
-}
-
-/* CONFETTI */
-function fireConfetti() {
-  confetti({
-    particleCount: 120,
-    spread: 70,
-    origin: { y: 0.6 },
-    colors: ['#ff4d6d', '#ff758c', '#ff9a9e'],
-    shapes: ['heart']
-  });
-}
-
-/* HEART RAIN */
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerText = "❤️";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.fontSize = (12 + Math.random() * 12) + "px";
-  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 8000);
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerText = "❤️";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.fontSize = (12 + Math.random() * 12) + "px";
+  h.style.animationDuration = (4 + Math.random() * 4) + "s";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 8000);
 }
 setInterval(createHeart, 400);
 </script>
