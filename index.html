@@ -36,7 +36,8 @@ button {
   color: #ff4d6d;
   font-size: 16px;
   cursor: pointer;
-  margin-top: 20px;
+  margin: 10px;
+  transition: transform 0.3s ease;
 }
 
 .options button {
@@ -44,6 +45,11 @@ button {
   width: 90%;
   max-width: 320px;
   margin: 10px auto;
+}
+
+/* NO button shrink */
+#noBtn {
+  transition: transform 0.3s ease;
 }
 
 /* photo */
@@ -56,7 +62,7 @@ img.photo {
   box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
-/* password input */
+/* input */
 input {
   padding: 12px;
   border-radius: 20px;
@@ -103,6 +109,11 @@ footer {
 
 <body>
 
+<!-- 🎵 TELUGU LOVE BGM -->
+<audio id="bgMusic" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2023/03/06/audio_8c6b1c9d7b.mp3" type="audio/mpeg">
+</audio>
+
 <!-- PASSWORD SCREEN -->
 <section class="active" id="lockScreen">
   <h1>Private Page 🔒</h1>
@@ -116,8 +127,11 @@ footer {
 <!-- SLIDE 1 -->
 <section>
   <h1>Hey Varshitha</h1>
-  <h2>Will you be my Valentine?</h2>
+  <h2>My Bangaram ❤️</h2>
+  <p>Will you be my Valentine?</p>
+
   <button onclick="fireConfetti(); next()">Yes</button>
+  <button id="noBtn" onclick="shrinkNo()">No</button>
 </section>
 
 <!-- SLIDE 2 -->
@@ -162,21 +176,17 @@ footer {
   </div>
 </section>
 
-<!-- MCQ 4 -->
-<section>
-  <h2>One last question</h2>
-  <p>Would you like to be my Valentine?</p>
-  <div class="options">
-    <button onclick="saveAnswer('Yes')">Yes</button>
-    <button onclick="saveAnswer('Let’s see')">Let’s see</button>
-  </div>
-</section>
-
 <!-- FINAL -->
 <section>
   <h2>Thank you for answering</h2>
   <p>Your answers:</p>
   <div id="answerList"></div>
+
+  <p>
+    Sending you a warm hug 🤍 <br>
+    and a gentle kiss 😘 <br><br>
+    If that felt too much, I’m sorry — I truly respect you.
+  </p>
 
   <button onclick="downloadAnswers()">Download answers</button>
   <button onclick="replay()">Replay</button>
@@ -184,7 +194,7 @@ footer {
   <footer>— Arihanth</footer>
 </section>
 
-<!-- CONFETTI LIBRARY -->
+<!-- CONFETTI -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
@@ -195,12 +205,18 @@ const PASSWORD = "chococream";
 let slides = document.querySelectorAll("section");
 let current = 0;
 let answers = [];
+let noScale = 1;
 
 /* PASSWORD CHECK */
 function checkPassword() {
   const input = document.getElementById("passwordInput").value;
   if (input === PASSWORD) {
     fireConfetti();
+
+    const music = document.getElementById("bgMusic");
+    music.volume = 0.4;
+    music.play();
+
     setTimeout(() => {
       document.getElementById("lockScreen").classList.remove("active");
       slides[1].classList.add("active");
@@ -211,21 +227,27 @@ function checkPassword() {
   }
 }
 
-/* NAVIGATION */
+/* NAV */
 function next() {
   slides[current].classList.remove("active");
   current++;
   slides[current].classList.add("active");
 }
 
-/* SAVE ANSWERS */
+/* NO BUTTON SHRINK */
+function shrinkNo() {
+  noScale -= 0.15;
+  if (noScale < 0.3) noScale = 0.3;
+  document.getElementById("noBtn").style.transform = `scale(${noScale})`;
+}
+
+/* ANSWERS */
 function saveAnswer(ans) {
   answers.push(ans);
   if (current === slides.length - 2) showAnswers();
   next();
 }
 
-/* SHOW ANSWERS */
 function showAnswers() {
   const list = document.getElementById("answerList");
   list.innerHTML = "";
