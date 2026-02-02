@@ -46,7 +46,6 @@ button{
   padding:10px;
   border-radius:20px;
   border:none;
-  text-align:center;
 }
 #error{margin-top:15px;min-height:22px}
 
@@ -62,16 +61,12 @@ button{
   background:rgba(0,0,0,0.3);
   border:none;
   color:white;
-  cursor:pointer;
 }
 
-/* FADE */
-.fade-group{opacity:0;transform:translateY(18px);animation:fade 1.2s forwards}
-.fade-delay{animation-delay:.6s}
-.fade-in{opacity:0;transform:translateY(15px);animation:fade 1.2s forwards;animation-delay:1s}
-@keyframes fade{to{opacity:1;transform:none}}
+/* ANIMATIONS */
+.fade{animation:fade 1s forwards}
+@keyframes fade{from{opacity:0}to{opacity:1}}
 
-/* SHAKE */
 .shake{animation:shake .4s}
 @keyframes shake{
   0%{transform:translateX(0)}
@@ -96,11 +91,8 @@ button{
   top:-15px;
   font-size:26px;
   animation:bouquetFall 8s linear forwards;
-  opacity:0.95;
 }
-@keyframes bouquetFall{
-  to{transform:translateY(110vh);}
-}
+@keyframes bouquetFall{to{transform:translateY(110vh)}}
 
 /* SCORECARD */
 .scorecard{
@@ -110,48 +102,13 @@ button{
   border-radius:22px;
   background:rgba(255,255,255,0.18);
   backdrop-filter:blur(8px);
-  box-shadow:0 10px 25px rgba(0,0,0,0.15);
-}
-.scorecard-header{
-  font-size:18px;
-  font-weight:600;
-  margin-bottom:6px;
-}
-.scorecard-sub{
-  font-size:13px;
-  opacity:.9;
 }
 .score-main{
   display:flex;
   justify-content:space-between;
-  align-items:center;
   background:rgba(0,0,0,0.25);
-  padding:10px 14px;
-  border-radius:14px;
-  margin-top:10px;
-}
-.score{
-  font-size:26px;
-}
-.overs{
-  font-size:14px;
-}
-.score-info{
-  display:flex;
-  justify-content:space-between;
-  margin:14px 0;
-  font-size:13px;
-}
-.partnership-box{
-  background:rgba(255,255,255,0.15);
-  border-radius:16px;
   padding:10px;
-}
-.partnership-box .players{
-  font-weight:600;
-}
-.partnership-box .runs{
-  font-size:22px;
+  border-radius:14px;
 }
 </style>
 </head>
@@ -162,8 +119,8 @@ button{
 
 <!-- LOCK -->
 <div id="lockScreen">
-  <h1>Enter the password 💌</h1>
-  <input type="password" id="passwordInput" placeholder="Password">
+  <h2>Enter the password 💌</h2>
+  <input type="password" id="passwordInput">
   <br><br>
   <button onclick="checkPassword()">Unlock</button>
   <div id="error"></div>
@@ -179,16 +136,16 @@ button{
   <h1>Hey 🤍</h1>
   <p>Can I get a hug or a kiss before we continue? 🤭</p>
   <div style="font-size:32px;">
-    <span onclick="introLove('😘')" style="cursor:pointer;">😘</span>
-    <span onclick="introLove('🫂')" style="cursor:pointer;margin-left:20px;">🫂</span>
+    <span onclick="introLove('😘')">😘</span>
+    <span onclick="introLove('🫂')" style="margin-left:20px">🫂</span>
   </div>
   <p id="introMsg"></p>
 </section>
 
-<!-- VALENTINE -->
+<!-- QUESTION -->
 <section>
   <h2>One important question 🤭💞</h2>
-  <p>Will u be my valentine<br><b>Varshi bangaram</b> 🤭💞👉👈</p>
+  <p>Will u be my valentine<br><b>Varshi bangaram</b> 💖</p>
   <button onclick="valYes()">Yes 💖</button>
   <button id="valNoBtn" onclick="valNo()">No 😅</button>
   <p id="valMsg"></p>
@@ -198,61 +155,27 @@ button{
 <section>
   <h2>💖 Match Summary</h2>
 
-  <!-- RELATIONSHIP BAR -->
-  <div style="max-width:280px;margin:15px auto;background:rgba(255,255,255,.15);padding:15px;border-radius:18px">
-    <h3>💞 Our Status</h3>
-    <div style="background:rgba(255,255,255,.3);height:14px;border-radius:10px;overflow:hidden">
-      <div id="scoreBar" style="height:100%;width:0%;background:linear-gradient(90deg,#ff4d6d,#ff9a9e);transition:.6s"></div>
-    </div>
-    <p id="statusText">Just started 💫</p>
-  </div>
-
-  <!-- SCORECARD -->
   <div class="scorecard">
-    <div class="scorecard-header">🏏 Love Match</div>
-    <div class="scorecard-sub">💐 Picked with love, not from a shop</div>
-
+    <h3>🏏 Love Match</h3>
     <div class="score-main">
-      <span class="score"><b id="runs">0</b>/0</span>
-      <span class="overs">Overs: <span id="overs">0.0</span></span>
+      <b id="runs">0</b>/0
+      <span>Overs: <span id="overs">0.0</span></span>
     </div>
-
-    <div class="score-info">
-      <div>📅 First meet<br><b>27/01/2025</b></div>
-      <div>⏳ Friends since<br><b><span id="daysTogether">0</span> days</b></div>
-    </div>
-
-    <div class="partnership-box">
-      🤝 Partnership
-      <div class="players">Ari 🏏 Varshi</div>
-      <div class="runs"><span id="partnership">0*</span></div>
-    </div>
-
+    <p>📅 First meet: 27/01/2025</p>
+    <p>⏳ Friends since: <span id="daysTogether">0</span> days</p>
+    <p>🤝 Partnership: Ari & Varshi – <span id="partnership">0*</span></p>
     <p id="matchStatus">Building partnership 💖</p>
-    <p style="font-size:13px;">👑 King Kohli mode: ON</p>
+    <p>👑 King Kohli mode: ON</p>
   </div>
 
-  <!-- PHOTO -->
   <img src="https://i.ibb.co/bRJmpcST/IMG-20260202-161418.jpg"
-       class="fade-group"
-       style="max-width:220px;border-radius:20px;margin-top:20px">
+       style="max-width:220px;border-radius:20px">
 
-  <!-- MESSAGE -->
-  <p class="fade-group fade-delay"
-     style="background:rgba(255,255,255,.15);padding:18px;border-radius:18px">
+  <p>
     Thank you bangaram for accepting me as your valentine 😚<br><br>
-    And love you 😘🫂<br><br>
+    Love you 😘🫂<br><br>
     <b>From your<br>Choco ( Ari )</b>
   </p>
-
-  <!-- RATING -->
-  <div class="fade-in">
-    <h3>Rate this 😌</h3>
-    <span onclick="rateOnce()" style="font-size:28px;cursor:pointer">😘</span>
-    <span onclick="rateOnce()" style="font-size:28px;cursor:pointer;margin:0 15px">🫂</span>
-    <span onclick="rateOnce()" style="font-size:28px;cursor:pointer">⭐</span>
-    <p id="rateMsg"></p>
-  </div>
 
   <footer>— Arihanth</footer>
 </section>
@@ -263,101 +186,100 @@ button{
 const PASSWORD="chococream";
 const firstMeetDate=new Date(2025,0,27);
 let slides=document.querySelectorAll("section");
-let current=0,attempts=0,rated=false;
-let score=0,runs=0,balls=0;
+let current=0,attempts=0;
+let runs=0,balls=0;
 
 /* CONFETTI */
 function fireConfetti(){
-  confetti({particleCount:60,spread:60,origin:{y:0.7}});
+  confetti({particleCount:50,spread:60,origin:{y:0.7}});
+}
+
+/* MUSIC SAFE */
+function playMusicSafely(){
+  const m=document.getElementById("bgMusic");
+  if(m.paused){
+    m.volume=0.7;
+    m.play().catch(()=>{});
+  }
+}
+function toggleMusic(){
+  const m=bgMusic;
+  if(m.paused){playMusicSafely();muteBtn.innerText="🔊";}
+  else{m.pause();muteBtn.innerText="🔇";}
 }
 
 /* PASSWORD */
 function checkPassword(){
   attempts++;
-  if(passwordInput.value===PASSWORD) unlock();
-  else if(attempts===1){
-    typeText("You already broke into my heart 💖 why do you need a password again 😌","error",()=>setTimeout(unlock,1500));
+  if(passwordInput.value===PASSWORD){
+    unlock();
+  }else if(attempts===1){
+    error.innerText="You already broke into my heart 💖";
+    setTimeout(unlock,1200);
   }
-}
-function typeText(t,id,cb){
-  let i=0,el=document.getElementById(id);el.innerText="";
-  let s=setInterval(()=>{i<t.length?el.innerText+=t[i++]: (clearInterval(s),cb&&cb())},40);
 }
 function unlock(){
   fireConfetti();
   lockScreen.style.display="none";
   slides[0].classList.add("active");
 }
+
+/* NAV */
 function next(){
   slides[current].classList.remove("active");
-  slides[++current].classList.add("active");
-  if(current===slides.length-1) updateDaysTogether();
+  current++;
+  slides[current].classList.add("active");
+  if(current===2) updateDays();
 }
 
-/* MUSIC */
-function toggleMusic(){
-  if(bgMusic.paused){bgMusic.play();muteBtn.innerText="🔊";}
-  else{bgMusic.pause();muteBtn.innerText="🔇";}
+/* INTRO FIXED */
+function introLove(e){
+  introMsg.innerText=e==="😘"
+    ?"That kiss made my heart skip 💖"
+    :"This hug feels perfect 🫂";
+
+  playMusicSafely();
+  fireConfetti();
+  updateCricket(20);
+
+  setTimeout(next,600);
+}
+
+/* QUESTION */
+function valYes(){
+  valMsg.innerText="That made my whole day 🥹💖";
+  fireConfetti();
+  updateCricket(40);
+  setTimeout(next,800);
+}
+function valNo(){
+  valMsg.innerText="Hehe 🤭 I’ll take that as a shy yes 💖";
+  valNoBtn.classList.add("shake");
+  fireConfetti();
+  updateCricket(40);
+  setTimeout(next,1000);
+}
+
+/* SCORE */
+function updateCricket(r){
+  runs=Math.min(100,runs+r);
+  balls+=6;
+  runsEl.innerText=runs;
+  overs.innerText=(balls/6).toFixed(1);
+  partnership.innerText=runs+"*";
+  matchStatus.innerText=runs>=100?"Match won by Love 💞":"Building partnership 💖";
 }
 
 /* DAYS */
-function updateDaysTogether(){
+function updateDays(){
   const t=new Date();t.setHours(0,0,0,0);
   const s=new Date(firstMeetDate);s.setHours(0,0,0,0);
   daysTogether.innerText=Math.max(0,Math.floor((t-s)/(1000*60*60*24)));
 }
 
-/* SCORE */
-function updateScore(p){
-  score=Math.min(100,score+p);
-  scoreBar.style.width=score+"%";
-  statusText.innerText=
-    score<25?"Crush stage 🤭":
-    score<50?"Talking & smiling 😌":
-    score<75?"Something special 💖":
-    "Official Valentine 💞✨";
-}
-function updateCricket(r){
-  runs=Math.min(100,runs+r); balls+=6;
-  runsEl.innerText=runs;
-  overs.innerText=(balls/6).toFixed(1);
-  partnership.innerText=runs+"*";
-  matchStatus.innerText=runs>=100?"Match won by Love 💞🏆":"Building partnership 💖";
-}
-
-/* INTRO */
-function introLove(e){
-  introMsg.innerText=e==="😘"?"That kiss made my heart skip 💖":"This hug feels perfect 🫂";
-  bgMusic.play();
-  fireConfetti(); updateScore(20); updateCricket(20);
-  setTimeout(next,1200);
-}
-
-/* VALENTINE */
-function valYes(){
-  valMsg.innerText="That made my whole day 🥹💖";
-  fireConfetti(); updateScore(40); updateCricket(40);
-  setTimeout(next,1200);
-}
-function valNo(){
-  valMsg.innerText="Hehe 🤭 I’ll take that as a shy yes 💖";
-  valNoBtn.classList.add("shake");
-  setTimeout(()=>valNoBtn.classList.remove("shake"),400);
-  fireConfetti(); updateScore(40); updateCricket(40);
-  setTimeout(next,1600);
-}
-
-/* RATING */
-function rateOnce(){
-  if(rated)return;
-  rated=true;
-  rateMsg.innerText="Perfect ending 💖";
-  fireConfetti(); updateScore(40); updateCricket(40);
-}
-
 /* HEARTS */
 setInterval(()=>{
-  if(document.querySelectorAll(".heart").length>12)return;
+  if(document.querySelectorAll(".heart").length>10)return;
   const h=document.createElement("div");
   h.className="heart";h.innerText="❤️";
   h.style.left=Math.random()*100+"vw";
@@ -365,7 +287,7 @@ setInterval(()=>{
   setTimeout(()=>h.remove(),6000);
 },1200);
 
-/* BOUQUETS */
+/* BOUQUET */
 setInterval(()=>{
   if(document.querySelectorAll(".bouquet").length>3)return;
   const b=document.createElement("div");
