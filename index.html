@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -84,20 +84,14 @@ button{
 }
 @keyframes bouquetFall{to{transform:translateY(110vh)}}
 
-/* SCORECARD */
-.scorecard{
-  max-width:300px;
+/* CARD */
+.card{
+  max-width:320px;
   margin:20px auto;
-  padding:16px;
+  padding:18px;
   border-radius:22px;
   background:rgba(255,255,255,0.18);
-}
-.score-main{
-  display:flex;
-  justify-content:space-between;
-  background:rgba(0,0,0,0.25);
-  padding:10px;
-  border-radius:14px;
+  backdrop-filter:blur(8px);
 }
 </style>
 </head>
@@ -120,7 +114,7 @@ button{
   <source src="https://cdn.pixabay.com/audio/2023/03/27/audio_2c9d8c0b61.mp3" type="audio/mpeg">
 </audio>
 
-<!-- QUESTION -->
+<!-- VALENTINE QUESTION -->
 <section>
   <h2>One important question 🤭💞</h2>
   <p>Will u be my valentine<br><b>Varshi bangaram</b> 💖</p>
@@ -133,28 +127,39 @@ button{
 <section>
   <h2>💖 Match Summary</h2>
 
-  <div class="scorecard">
+  <div class="card">
     <h3>🏏 Love Match</h3>
-    <div class="score-main">
-      <b id="runs">0</b>/0
-      <span>Overs: <span id="overs">0.0</span></span>
-    </div>
-    <p>📅 First meet: 27/01/2025</p>
-    <p>⏳ Friends since: <span id="daysTogether">0</span> days</p>
-    <p>🤝 Partnership: Ari & Varshi – <span id="partnership">0*</span></p>
-    <p id="matchStatus">Building partnership 💖</p>
+    <p>📅 First meet: <b>27/01/2025</b></p>
+    <p>🤝 Partnership: <b>Ari & Varshi – 1 year ♾️</b></p>
+    <p id="matchStatus">Forever together ♾️💖</p>
     <p>👑 King Kohli mode: ON</p>
   </div>
 
+  <!-- PHOTOS -->
   <img src="https://i.ibb.co/bRJmpcST/IMG-20260202-161418.jpg"
-       style="max-width:220px;border-radius:20px">
+       style="max-width:260px;border-radius:20px;margin:15px 0">
 
-  <p>
+  <!-- YOUR MESSAGE -->
+  <p style="background:rgba(255,255,255,0.15);
+            padding:18px;
+            border-radius:18px;
+            line-height:1.6;
+            font-size:15px;">
     Thank you bangaram for accepting me as your valentine 😚<br><br>
-    Love you 😘🫂<br><br>
-    <b>From your<br>Choco ( Ari )</b>
+
+    really so much lucky for that manam kalavalemi kabatti ila online lo msg chesthuna  
+    and ala weird ga chuddankandi mee photo petanu ani naa photo pedatha  
+    comedy ga untundi 😅<br><br>
+
+    so finally thank you maa 💖<br><br>
+
+    And love you 😘🫂<br><br>
+
+    <b>From your<br>
+    Choco ( ari )</b>
   </p>
 
+  <!-- END LOVE -->
   <div style="margin-top:30px;">
     <h3>One last thing 🤍</h3>
     <p>Can I get a hug or a kiss? 🤭</p>
@@ -168,32 +173,21 @@ button{
   <footer>— Arihanth</footer>
 </section>
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
 <script>
 const PASSWORD="chococream";
-const firstMeetDate=new Date(2025,0,27);
 const slides=document.querySelectorAll("section");
 let current=0;
-let runs=0,balls=0;
-
-/* CONFETTI */
-function fireConfetti(){
-  confetti({particleCount:40,spread:60,origin:{y:0.7}});
-}
 
 /* MUSIC */
 function playMusicSafely(){
-  const m=document.getElementById("bgMusic");
-  if(m.paused){
-    m.volume=0.7;
-    m.play().catch(()=>{});
+  if(bgMusic.paused){
+    bgMusic.volume=0.7;
+    bgMusic.play().catch(()=>{});
   }
 }
 function toggleMusic(){
-  const m=document.getElementById("bgMusic");
-  if(m.paused){playMusicSafely();muteBtn.innerText="🔊";}
-  else{m.pause();muteBtn.innerText="🔇";}
+  if(bgMusic.paused){playMusicSafely();muteBtn.innerText="🔊";}
+  else{bgMusic.pause();muteBtn.innerText="🔇";}
 }
 
 /* PASSWORD */
@@ -206,56 +200,33 @@ function checkPassword(){
   }
 }
 function unlock(){
-  fireConfetti();
   lockScreen.style.display="none";
   slides[0].classList.add("active");
 }
 
 /* NAV */
 function next(){
-  if(current >= slides.length-1) return;
+  if(current>=slides.length-1) return;
   slides[current].classList.remove("active");
   current++;
   slides[current].classList.add("active");
-  if(current===1) updateDays();
 }
 
 /* QUESTION */
 function valYes(){
-  lockButtons();
+  lockBtns();
   valMsg.innerText="That made my whole day 🥹💖";
-  playMusicSafely(); fireConfetti();
-  updateCricket(50);
+  playMusicSafely();
   next();
 }
 function valNo(){
-  lockButtons();
+  lockBtns();
   valMsg.innerText="Hehe 🤭 I’ll take that as a shy yes 💖";
-  playMusicSafely(); fireConfetti();
-  updateCricket(50);
+  playMusicSafely();
   next();
 }
-function lockButtons(){
+function lockBtns(){
   document.querySelectorAll("button").forEach(b=>b.disabled=true);
-}
-
-/* SCORE */
-function updateCricket(r){
-  runs=Math.min(100,runs+r);
-  balls+=6;
-  document.getElementById("runs").innerText=runs;
-  document.getElementById("overs").innerText=(balls/6).toFixed(1);
-  document.getElementById("partnership").innerText=runs+"*";
-  document.getElementById("matchStatus").innerText=
-    runs>=100?"Match won by Love 💞":"Building partnership 💖";
-}
-
-/* DAYS */
-function updateDays(){
-  const t=new Date();t.setHours(0,0,0,0);
-  const s=new Date(firstMeetDate);s.setHours(0,0,0,0);
-  document.getElementById("daysTogether").innerText=
-    Math.max(0,Math.floor((t-s)/(1000*60*60*24)));
 }
 
 /* END LOVE */
@@ -263,7 +234,6 @@ function endLove(e){
   endMsg.innerText = e==="😘"
     ?"That kiss made my heart melt 💖"
     :"That hug felt like home 🫂";
-  fireConfetti();
 }
 
 /* HEARTS */
