@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine 💖</title>
 
 <style>
 body{
   margin:0;
-  font-family:Poppins,sans-serif;
+  font-family:'Poppins', sans-serif;
   background:linear-gradient(135deg,#ff758c,#ff7eb3);
   color:white;
   overflow-x:hidden;
@@ -29,7 +30,10 @@ button{
   color:white;
   font-size:16px;
   cursor:pointer;
+  transition: transform 0.2s;
 }
+button:active { transform: scale(0.95); }
+button:disabled { opacity: 0.6; cursor: not-allowed; }
 
 /* LOCK */
 #lockScreen{
@@ -43,14 +47,17 @@ button{
   z-index:999;
 }
 #lockScreen input{
-  padding:10px;
+  padding:12px;
   border-radius:20px;
   border:none;
+  text-align:center;
+  outline: none;
 }
 #error{
   margin-top:15px;
   font-size:14px;
   line-height:1.4;
+  padding: 0 20px;
 }
 
 /* MUTE */
@@ -66,77 +73,67 @@ button{
   color:white;
 }
 
-/* HEARTS */
-.heart{
+/* ANIMATIONS */
+.heart, .bouquet{
   position:fixed;
-  top:-10px;
-  font-size:14px;
-  animation:fall 6s linear forwards;
+  top:-50px;
+  z-index: 10;
+  pointer-events: none;
 }
-@keyframes fall{to{transform:translateY(110vh)}}
-
-/* BOUQUET */
-.bouquet{
-  position:fixed;
-  top:-15px;
-  font-size:26px;
-  animation:bouquetFall 8s linear forwards;
-}
-@keyframes bouquetFall{to{transform:translateY(110vh)}}
+.heart { font-size:18px; animation:fall 6s linear forwards; }
+.bouquet { font-size:28px; animation:fall 8s linear forwards; }
+@keyframes fall{to{transform:translateY(115vh)}}
 
 /* SCORECARD */
 .scorecard{
-  max-width:300px;
+  max-width:320px;
   margin:20px auto;
   padding:16px;
   border-radius:22px;
   background:rgba(255,255,255,0.18);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
 }
 .score-main{
   display:flex;
   justify-content:space-between;
   background:rgba(0,0,0,0.25);
-  padding:10px;
+  padding:12px;
   border-radius:14px;
+  margin-bottom: 15px;
 }
 </style>
 </head>
-
 <body>
 
 <button id="muteBtn" onclick="toggleMusic()">🔊</button>
 
-<!-- LOCK -->
 <div id="lockScreen">
   <h2>Enter the password 💌</h2>
-  <input type="password" id="passwordInput">
-  <br><br>
+  <input type="password" id="passwordInput" placeholder="Password here...">
+  <br>
   <button onclick="checkPassword()">Unlock</button>
   <div id="error"></div>
 </div>
 
-<!-- MUSIC -->
 <audio id="bgMusic" loop>
   <source src="https://cdn.pixabay.com/audio/2023/03/27/audio_2c9d8c0b61.mp3" type="audio/mpeg">
 </audio>
 
-<!-- QUESTION -->
-<section>
+<section id="section0">
   <h2>One important question 🤭💞</h2>
   <p>Will u be my valentine<br><b>Varshi bangaram</b> 💖</p>
-  <button onclick="valYes()">Yes 💖</button>
-  <button onclick="valNo()">No 😅</button>
+  <button onclick="handleResponse('yes')">Yes 💖</button>
+  <button onclick="handleResponse('no')">No 😅</button>
   <p id="valMsg"></p>
 </section>
 
-<!-- FINAL -->
-<section>
+<section id="section1">
   <h2>💖 Match Summary</h2>
 
   <div class="scorecard">
     <h3>🏏 Love Match</h3>
     <div class="score-main">
-      <b id="runs">0</b>/0
+      <span><b id="runs">0</b>/0</span>
       <span>Overs: <span id="overs">0.0</span></span>
     </div>
     <p>📅 First meet: 27/01/2025</p>
@@ -146,8 +143,9 @@ button{
     <p>👑 King Kohli mode: ON</p>
   </div>
 
-  <img src="https://i.ibb.co/bRJmpcST/IMG-20260202-161418.jpg"
-       style="max-width:220px;border-radius:20px">
+  <img src="https://i.ibb.co/bRJmpcST/IMG-20260202-161418.jpg" 
+       alt="Varshi"
+       style="max-width:220px; border-radius:20px; border: 3px solid white;">
 
   <p>
     Thank you bangaram for accepting me as your valentine 😚<br><br>
@@ -155,133 +153,142 @@ button{
     <b>From your<br>Choco ( Ari )</b>
   </p>
 
-  <!-- END LOVE -->
-  <div style="margin-top:30px;">
+  <div style="margin-top:30px; padding-bottom: 40px;">
     <h3>One last thing 🤍</h3>
     <p>Can I get a hug or a kiss? 🤭</p>
-    <div style="font-size:32px;">
-      <span onclick="endLove('😘')">😘</span>
-      <span onclick="endLove('🫂')" style="margin-left:20px">🫂</span>
+    <div style="font-size:40px;">
+      <span onclick="endLove('😘')" style="cursor:pointer">😘</span>
+      <span onclick="endLove('🫂')" style="margin-left:30px; cursor:pointer">🫂</span>
     </div>
-    <p id="endMsg"></p>
+    <p id="endMsg" style="height: 20px;"></p>
   </div>
 
-  <footer>— Arihanth</footer>
+  <footer style="font-size: 12px; opacity: 0.8;">— Arihanth</footer>
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
-const PASSWORD="chococream";
-const firstMeetDate=new Date(2025,0,27);
-let slides=document.querySelectorAll("section");
-let current=0;
-let runs=0,balls=0;
+// --- CONFIG & CONSTANTS ---
+const PASSWORD = "chococream";
+const firstMeetDate = new Date(2025, 0, 27);
 
-/* CONFETTI */
+// --- ELEMENTS ---
+const bgMusic = document.getElementById('bgMusic');
+const muteBtn = document.getElementById('muteBtn');
+const passwordInput = document.getElementById('passwordInput');
+const errorDiv = document.getElementById('error');
+const runsEl = document.getElementById('runs');
+const oversEl = document.getElementById('overs');
+const partnershipEl = document.getElementById('partnership');
+const matchStatus = document.getElementById('matchStatus');
+const daysTogetherEl = document.getElementById('daysTogether');
+const valMsg = document.getElementById('valMsg');
+const endMsg = document.getElementById('endMsg');
+const lockScreen = document.getElementById('lockScreen');
+
+let slides = document.querySelectorAll("section");
+let current = 0;
+let runs = 0, balls = 0;
+
+// --- FUNCTIONS ---
 function fireConfetti(){
-  confetti({particleCount:50,spread:60,origin:{y:0.7}});
+  confetti({particleCount:70, spread:70, origin:{y:0.6}, colors:['#ff4d6d', '#ffffff', '#ff758c']});
 }
 
-/* MUSIC */
 function playMusicSafely(){
   if(bgMusic.paused){
-    bgMusic.volume=0.7;
-    bgMusic.play().catch(()=>{});
+    bgMusic.volume = 0.5;
+    bgMusic.play().catch(e => console.log("Autoplay prevented"));
   }
-}
-function toggleMusic(){
-  if(bgMusic.paused){playMusicSafely();muteBtn.innerText="🔊";}
-  else{bgMusic.pause();muteBtn.innerText="🔇";}
 }
 
-/* PASSWORD */
+function toggleMusic(){
+  if(bgMusic.paused){ playMusicSafely(); muteBtn.innerText="🔊"; }
+  else { bgMusic.pause(); muteBtn.innerText="🔇"; }
+}
+
 function checkPassword(){
-  if(passwordInput.value===PASSWORD){
+  const val = passwordInput.value.trim().toLowerCase();
+  if(val === PASSWORD){
     unlock();
-  }else{
-    error.innerHTML="You already broke into my heart 💖<br>why do you need a password again 😌";
-    setTimeout(unlock,1000);
+  } else {
+    errorDiv.innerHTML = "You already broke into my heart 💖<br>why do you need a password again 😌";
+    setTimeout(unlock, 2500); // Friendly redirect anyway
   }
 }
+
 function unlock(){
   fireConfetti();
-  lockScreen.style.display="none";
+  lockScreen.style.display = "none";
   slides[0].classList.add("active");
+  playMusicSafely();
 }
 
-/* SAFE NAV */
-function next(){
-  if(current >= slides.length - 1) return;
+function nextSlide(){
   slides[current].classList.remove("active");
   current++;
-  slides[current].classList.add("active");
-  if(current === 1) updateDays();
+  if(slides[current]){
+    slides[current].classList.add("active");
+    if(current === 1) updateDays();
+  }
 }
 
-/* QUESTION (NO TIMEOUTS) */
-function valYes(){
-  lockButtons();
-  valMsg.innerText="That made my whole day 🥹💖";
-  playMusicSafely(); fireConfetti();
-  updateCricket(40);
-  next();
-}
-function valNo(){
-  lockButtons();
-  valMsg.innerText="Hehe 🤭 I’ll take that as a shy yes 💖";
-  playMusicSafely(); fireConfetti();
-  updateCricket(40);
-  next();
-}
-function lockButtons(){
-  document.querySelectorAll("button").forEach(b=>b.disabled=true);
+function handleResponse(choice){
+  // Disable only the buttons in this section
+  slides[current].querySelectorAll("button").forEach(b => b.disabled = true);
+  
+  if(choice === 'yes'){
+    valMsg.innerText = "That made my whole day 🥹💖";
+  } else {
+    valMsg.innerText = "Hehe 🤭 I’ll take that as a shy yes 💖";
+  }
+  
+  fireConfetti();
+  updateCricket(100); // Completes the century
+  
+  setTimeout(nextSlide, 2000);
 }
 
-/* SCORE */
 function updateCricket(r){
-  runs=Math.min(100,runs+r);
-  balls+=6;
-  runsEl.innerText=runs;
-  overs.innerText=(balls/6).toFixed(1);
-  partnership.innerText=runs+"*";
-  matchStatus.innerText=runs>=100?"Match won by Love 💞":"Building partnership 💖";
+  runs = r;
+  balls = 60; // 10 overs
+  runsEl.innerText = runs;
+  oversEl.innerText = "10.0";
+  partnershipEl.innerText = runs + "*";
+  matchStatus.innerText = "Match won by Love 💞";
 }
 
-/* DAYS */
 function updateDays(){
-  const t=new Date();t.setHours(0,0,0,0);
-  const s=new Date(firstMeetDate);s.setHours(0,0,0,0);
-  daysTogether.innerText=Math.max(0,Math.floor((t-s)/(1000*60*60*24)));
+  const today = new Date();
+  const diffTime = Math.abs(today - firstMeetDate);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  daysTogetherEl.innerText = diffDays;
 }
 
-/* END LOVE */
 function endLove(e){
-  endMsg.innerText = e==="😘"
-    ?"That kiss made my heart melt 💖"
-    :"That hug felt like home 🫂";
+  endMsg.innerText = e === "😘" ? "That kiss made my heart melt 💖" : "That hug felt like home 🫂";
   fireConfetti();
 }
 
-/* HEARTS */
-setInterval(()=>{
-  if(document.querySelectorAll(".heart").length>8)return;
-  const h=document.createElement("div");
-  h.className="heart";h.innerText="❤️";
-  h.style.left=Math.random()*100+"vw";
+// --- BACKGROUND ANIMATIONS ---
+setInterval(() => {
+  if(document.querySelectorAll(".heart").length > 10) return;
+  const h = document.createElement("div");
+  h.className = "heart"; h.innerText = "❤️";
+  h.style.left = Math.random() * 100 + "vw";
   document.body.appendChild(h);
-  setTimeout(()=>h.remove(),6000);
-},1500);
+  setTimeout(() => h.remove(), 6000);
+}, 1000);
 
-/* BOUQUETS */
-setInterval(()=>{
-  if(document.querySelectorAll(".bouquet").length>2)return;
-  const b=document.createElement("div");
-  b.className="bouquet";b.innerText="💐";
-  b.style.left=Math.random()*90+"vw";
+setInterval(() => {
+  if(document.querySelectorAll(".bouquet").length > 3) return;
+  const b = document.createElement("div");
+  b.className = "bouquet"; b.innerText = "💐";
+  b.style.left = Math.random() * 90 + "vw";
   document.body.appendChild(b);
-  setTimeout(()=>b.remove(),8000);
-},4000);
+  setTimeout(() => b.remove(), 8000);
+}, 3000);
 </script>
 
 </body>
