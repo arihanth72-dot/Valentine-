@@ -81,7 +81,7 @@ button{
   100%{transform:translateX(0)}
 }
 
-/* HEARTS (OPTIMIZED) */
+/* HEARTS */
 .heart{
   position:fixed;
   top:-10px;
@@ -89,6 +89,70 @@ button{
   animation:fall 6s linear forwards;
 }
 @keyframes fall{to{transform:translateY(110vh)}}
+
+/* BOUQUET */
+.bouquet{
+  position:fixed;
+  top:-15px;
+  font-size:26px;
+  animation:bouquetFall 8s linear forwards;
+  opacity:0.95;
+}
+@keyframes bouquetFall{
+  to{transform:translateY(110vh);}
+}
+
+/* SCORECARD */
+.scorecard{
+  max-width:300px;
+  margin:20px auto;
+  padding:16px;
+  border-radius:22px;
+  background:rgba(255,255,255,0.18);
+  backdrop-filter:blur(8px);
+  box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+.scorecard-header{
+  font-size:18px;
+  font-weight:600;
+  margin-bottom:6px;
+}
+.scorecard-sub{
+  font-size:13px;
+  opacity:.9;
+}
+.score-main{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(0,0,0,0.25);
+  padding:10px 14px;
+  border-radius:14px;
+  margin-top:10px;
+}
+.score{
+  font-size:26px;
+}
+.overs{
+  font-size:14px;
+}
+.score-info{
+  display:flex;
+  justify-content:space-between;
+  margin:14px 0;
+  font-size:13px;
+}
+.partnership-box{
+  background:rgba(255,255,255,0.15);
+  border-radius:16px;
+  padding:10px;
+}
+.partnership-box .players{
+  font-weight:600;
+}
+.partnership-box .runs{
+  font-size:22px;
+}
 </style>
 </head>
 
@@ -105,7 +169,7 @@ button{
   <div id="error"></div>
 </div>
 
-<!-- SAFE TELUGU STYLE MUSIC -->
+<!-- MUSIC -->
 <audio id="bgMusic" loop>
   <source src="https://cdn.pixabay.com/audio/2023/03/27/audio_2c9d8c0b61.mp3" type="audio/mpeg">
 </audio>
@@ -143,20 +207,37 @@ button{
     <p id="statusText">Just started 💫</p>
   </div>
 
-  <!-- CRICKET SCOREBOARD -->
-  <div style="max-width:280px;margin:20px auto;background:rgba(0,0,0,.25);padding:15px;border-radius:18px">
-    <h3>🏏 Love Scorecard</h3>
-    <p style="font-size:22px"><b id="runs">0</b>/<b>0</b></p>
-    <p>Overs: <span id="overs">0.0</span></p>
-    <p style="font-size:14px;margin-top:10px;">
-      📅 First meet: <b>27/01/2025</b><br>
-      ⏳ Friends since: <b><span id="daysTogether">0</span> days</b><br>
-      🤝 Partnership: <b>Ari & Varshi – <span id="partnership">0*</span></b>
-    </p>
+  <!-- SCORECARD -->
+  <div class="scorecard">
+    <div class="scorecard-header">🏏 Love Match</div>
+    <div class="scorecard-sub">💐 Picked with love, not from a shop</div>
+
+    <div class="score-main">
+      <span class="score"><b id="runs">0</b>/0</span>
+      <span class="overs">Overs: <span id="overs">0.0</span></span>
+    </div>
+
+    <div class="score-info">
+      <div>📅 First meet<br><b>27/01/2025</b></div>
+      <div>⏳ Friends since<br><b><span id="daysTogether">0</span> days</b></div>
+    </div>
+
+    <div class="partnership-box">
+      🤝 Partnership
+      <div class="players">Ari 🏏 Varshi</div>
+      <div class="runs"><span id="partnership">0*</span></div>
+    </div>
+
     <p id="matchStatus">Building partnership 💖</p>
     <p style="font-size:13px;">👑 King Kohli mode: ON</p>
   </div>
 
+  <!-- PHOTO -->
+  <img src="https://i.ibb.co/bRJmpcST/IMG-20260202-161418.jpg"
+       class="fade-group"
+       style="max-width:220px;border-radius:20px;margin-top:20px">
+
+  <!-- MESSAGE -->
   <p class="fade-group fade-delay"
      style="background:rgba(255,255,255,.15);padding:18px;border-radius:18px">
     Thank you bangaram for accepting me as your valentine 😚<br><br>
@@ -185,7 +266,7 @@ let slides=document.querySelectorAll("section");
 let current=0,attempts=0,rated=false;
 let score=0,runs=0,balls=0;
 
-/* CONFETTI (LIGHT) */
+/* CONFETTI */
 function fireConfetti(){
   confetti({particleCount:60,spread:60,origin:{y:0.7}});
 }
@@ -274,7 +355,7 @@ function rateOnce(){
   fireConfetti(); updateScore(40); updateCricket(40);
 }
 
-/* HEART RAIN (LIMITED) */
+/* HEARTS */
 setInterval(()=>{
   if(document.querySelectorAll(".heart").length>12)return;
   const h=document.createElement("div");
@@ -283,6 +364,16 @@ setInterval(()=>{
   document.body.appendChild(h);
   setTimeout(()=>h.remove(),6000);
 },1200);
+
+/* BOUQUETS */
+setInterval(()=>{
+  if(document.querySelectorAll(".bouquet").length>3)return;
+  const b=document.createElement("div");
+  b.className="bouquet";b.innerText="💐";
+  b.style.left=Math.random()*90+"vw";
+  document.body.appendChild(b);
+  setTimeout(()=>b.remove(),8000);
+},3500);
 </script>
 
 </body>
